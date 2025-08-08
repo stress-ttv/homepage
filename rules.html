@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rules</title>
+  <link rel="icon" href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Barlow+Condensed:ital,wght@1,500&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background-color: #302c45;
+      margin: 0;
+      padding: 0;
+      color: #ffffff;
+    }
+
+    nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(61, 55, 90, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      z-index: 999;
+      display: flex;
+      gap: 24px;
+    }
+
+    nav a {
+      color: #bbaaf0;
+      font-weight: bold;
+      text-decoration: none;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #bbaaf0;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after { width: 100%; }
+    nav a.active::after { width: 100%; }
+
+    a {
+      color: #bbaaf0;
+      font-weight: bold;
+      text-decoration: none;
+      position: relative;
+    }
+
+    a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #bbaaf0;
+      transition: width 0.3s ease;
+    }
+
+    a:hover::after { width: 100%; }
+
+    .card {
+      background-color: #3d375a;
+      border-radius: 12px;
+      padding: 32px 24px;
+      max-width: 600px;
+      margin: 100px auto 60px auto;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px;
+      font-style: italic;
+      text-transform: uppercase;
+      text-align: left;
+      margin-bottom: 40px;
+      line-height: 1.1;
+    }
+
+    .qa-pair {
+      margin-bottom: 32px;
+    }
+
+    .qa-pair p:first-child {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .qa-pair p:last-child {
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 60px;
+    }
+
+    .twitch-link {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .twitch-link:hover {
+      transform: scale(1.1);
+    }
+
+    .twitch-link::after {
+      display: none !important;
+    }
+
+    .twitch-icon {
+      width: 36px;
+      height: 36px;
+      vertical-align: middle;
+    }
+
+    .caption {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #c5c0e3;
+      font-style: italic;
+    }
+
+    .back-to-top-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: #9f95da;
+      color: #302c45;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: opacity 0.3s ease, transform 0.2s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .back-to-top-button.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .back-to-top-button:hover {
+      transform: scale(1.1);
+      background-color: #b7aff2;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Q&A</a>
+  <a href="rules.html" class="active">Rules</a>
+  <a href="credits.html">Credits</a>
+</nav>
+
+<div class="card">
+  <a id="top"></a>
+  <h1>Obey The Law</h1>
+
+  <div class="qa-pair">
+    <p>Be kind to others in chat.</p>
+    <p>This isn’t the Thunderdome. Behave yourself.</p>
+  </div>
+
+  <div class="qa-pair">
+    <p>No racism, sexism, homophobia, or hate speech.</p>
+    <p>You will be banned so fast, there'll be a sonic boom.</p>
+  </div>
+
+  <div class="qa-pair">
+    <p>No self-promo.</p>
+    <p>Unless you're paying my ass, keep it to yourself.</p>
+  </div>
+
+  <div class="qa-pair">
+    <p>Respect the mods.</p>
+    <p>They wield the mighty ban hammer. Don't test them, they've been through enough.</p>
+  </div>
+
+  <div class="qa-pair">
+    <p>Don't backseat game unless I ask for help.</p>
+    <p>I know I'm bad. You know I'm bad. Let me spiral in peace.</p>
+  </div>
+
+  <div class="qa-pair">
+    <p>Keep the trauma tucked in.</p>
+    <p>We cry here, but only from getting clapped and the occasional bad RNG.</p>
+  </div>
+
+  <div class="qa-pair">
+    <p>Have fun and vibe.</p>
+    <p>If you’re not having fun, you’re legally required to fake it.</p>
+  </div>
+
+<div class="qa-pair">
+  <p>No spoilers or leaks.</p>
+  <p>I'm playing the game to suffer in real time. Don't rob me of that pain.</p>
+</div>
+
+<div class="qa-pair">
+  <p>No politics or religion.</p>
+  <p>This isn't Thanksgiving dinner.</p>
+</div>
+
+<div class="qa-pair">
+  <p>Don't worry about subs, tips, Hype Trains, etc.</p>
+  <p>If your wallet says no, I do too. You're still cool.</p>
+</div>
+
+</div>
+
+<footer>
+  <a href="https://twitch.tv/stress" target="_blank" class="twitch-link">
+    <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
+  </a>
+  <div class="caption">Watch me suffer live.</div>
+</footer>
+
+<button class="back-to-top-button" id="backToTop">↑</button>
+
+<script>
+  const backToTopBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+    backToTopBtn.classList.toggle('show', scrollPosition > 150);
+  });
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
