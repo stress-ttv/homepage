@@ -106,6 +106,7 @@
       line-height: 1.5;
     }
 
+    /* Page footer (bottom of page) */
     footer {
       text-align: center;
       margin-top: 40px;
@@ -168,23 +169,22 @@
       background-color: #b7aff2;
     }
 
-.credits-footnote {
-  margin-top: 24px;
-  padding-top: 12px;
-  border-top: 1px solid #5a527b;
-  text-align: center;
-  color: #bbaaf0;
-  font-style: italic;
-  font-size: 0.85rem;
-}
-
-    
+    /* Inline footnote block inside the card (NOT the page footer) */
+    .credits-footnote {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #5a527b;
+      text-align: center;
+      color: #bbaaf0;
+      font-style: italic;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html">Q&A</a>
+  <a href="index.html">Q&amp;A</a>
   <a href="rules.html">Rules</a>
   <a href="credits.html" class="active">Credits</a>
   <a href="commands.html">Commands</a>
@@ -195,40 +195,41 @@
   <h1>Divine Artists</h1>
 
   <div class="qa-pair">
-  <p>Who coded this delightful pixel paradise?</p>
-  <p>Me! Built with blood, sweat, and tears. But the tears were mostly from yawning all night.</p>
-</div>
+    <p>Who coded this delightful pixel paradise?</p>
+    <p>Me! Built with blood, sweat, and tears. But the tears were mostly from yawning all night.</p>
+  </div>
 
-<div class="qa-pair">
-  <p>Who’s behind all the chibi cuteness on your stream?</p>
-  <p>That’d be <a href="https://www.fiverr.com/dang0saur" target="_blank" rel="noopener noreferrer">Dango</a>, aka Ms. Super Talented.</p>
-</div>
+  <div class="qa-pair">
+    <p>Who’s behind all the chibi cuteness on your stream?</p>
+    <p>That’d be <a href="https://www.fiverr.com/dang0saur" target="_blank" rel="noopener noreferrer">Dango</a>, aka Ms. Super Talented.</p>
+  </div>
 
-<div class="qa-pair">
-  <p>Who designed those sub badges that make me feel special?</p>
-  <p>Whipped up by the incredible <a href="https://vgen.co/daysofrika" target="_blank" rel="noopener noreferrer">RiKA</a>. She also streams on Twitch.</p>
-</div>
+  <div class="qa-pair">
+    <p>Who designed those sub badges that make me feel special?</p>
+    <p>Whipped up by the incredible <a href="https://vgen.co/daysofrika" target="_blank" rel="noopener noreferrer">RiKA</a>. She also streams on Twitch.</p>
+  </div>
 
-<div class="qa-pair">
-  <p>Where are those kawaii stream overlays from? Asking for a friend (me).</p>
-  <p><a href="https://www.etsy.com/shop/tinycoffeecorner" target="_blank" rel="noopener noreferrer">Tiny Coffee Corner</a>. Get it and upgrade your stream vibe. Or don’t. I’m not your dad.</p>
-</div>
+  <div class="qa-pair">
+    <p>Where are those kawaii stream overlays from? Asking for a friend (me).</p>
+    <p><a href="https://www.etsy.com/shop/tinycoffeecorner" target="_blank" rel="noopener noreferrer">Tiny Coffee Corner</a>. Get it and upgrade your stream vibe. Or don’t. I’m not your dad.</p>
+  </div>
 
   <div class="qa-pair">
     <p>Who's responsible for the immaculate vibes during your streams?</p>
     <p>You. Yes, you. ❤️❤️❤️</p>
   </div>
 
-<div class="qa-pair">
-    <footer class="credits-footnote">
-    <small>Special shoutout to 
-  <a href="https://www.twitch.tv/nutty" target="_blank">Nutty</a>. I'd be completely bald if not for his YouTube tutorials.</small>
-  </footer>
-
-
+  <!-- Footnote block INSIDE the card (now a <div>, not a <footer>) -->
+  <div class="credits-footnote" role="contentinfo">
+    <small>
+      Special shoutout to 
+      <a href="https://www.twitch.tv/nutty" target="_blank" rel="noopener noreferrer">Nutty</a>.
+      I'd be completely bald if not for his YouTube tutorials.
+    </small>
+  </div>
 </div>
 
-
+<!-- Page footer (unchanged) -->
 <footer>
   <a href="https://twitch.tv/stress" target="_blank" class="twitch-link">
     <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
