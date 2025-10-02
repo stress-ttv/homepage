@@ -14,7 +14,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    /* Palette per request */
     :root {
       --bg: #302C45;      /* solid background */
       --panel: #3D375A;   /* card background */
@@ -48,8 +47,7 @@
       border-radius: 28px;
       background: var(--panel);
       box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      text-align: center; /* center everything inside */
-      /* Removed pop/fade-in animation to avoid fade when returning via Back */
+      text-align: center;
     }
 
     .brand {
@@ -64,7 +62,7 @@
     }
     .brand .name { font-size: clamp(40px, 9vw, 84px); font-weight: 600; line-height: .95; }
 
-    /* Equal spacing above and below the tagline (a bit larger) */
+    /* Equal spacing above and below the fact */
     .tagline { color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); margin: 0; }
     .brand + .tagline { margin-top: 1.75rem; }
     .tagline + .actions { margin-top: 1.75rem; }
@@ -107,7 +105,7 @@
         <span class="name">STRESS</span>
       </div>
 
-      <p class="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
+      <p class="tagline" id="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
 
       <div class="actions">
         <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
@@ -115,7 +113,63 @@
     </section>
   </div>
 
-  <!-- No JavaScript needed: native link navigation (fade removed) -->
+  <script>
+    // Rotate a random fun fact each time the page loads (and on BFCache restore)
+    (() => {
+      const el = document.getElementById('tagline');
+      if (!el) return;
+
+      const FACTS = [
+        'Octopuses have three hearts and blue blood.',
+        'Bananas are berries, but strawberries are not.',
+        'Koalas have fingerprints so similar to humans that they can confuse crime scenes.',
+        'Wombats poop in cubes. Nature is a designer.',
+        'Sharks existed before trees.',
+        'Nintendo was founded in 1889—before plastic was a thing.',
+        'The hashtag symbol is technically called an octothorpe.',
+        'Honey found in ancient Egyptian tombs is still edible.',
+        'The first recorded “computer bug” was a real moth found in 1947.',
+        'A group of flamingos is called a flamboyance.',
+        'There’s a basketball court hidden inside the U.S. Supreme Court building—nicknamed the Highest Court in the Land.',
+        'Cows and bison can crossbreed. Their offspring are called beefalo.',
+        'The Eiffel Tower can be about 15 cm taller in summer due to heat expansion.',
+        'Rabbits can’t vomit. (Evolution said: one-way only.)',
+        'Pac‑Man’s design was inspired by a pizza missing a slice (so the legend goes).',
+        'Avocados are technically giant berries.',
+        'A day on Venus is longer than its year.',
+        'Butterflies taste with their feet.',
+        'There are more possible chess games than atoms in the observable universe.',
+        'Hot water can sometimes freeze faster than cold water (the Mpemba effect).'
+      ];
+
+      function pickIndex(exclude) {
+        const n = FACTS.length;
+        if (n < 2) return 0;
+        let idx;
+        const rand = () => (window.crypto?.getRandomValues ? window.crypto.getRandomValues(new Uint32Array(1))[0] : Math.random() * 2**32) >>> 0;
+        do { idx = rand() % n; } while (idx === exclude);
+        return idx;
+      }
+
+      function setFact() {
+        const last = sessionStorage.getItem('lastFactIndex');
+        const lastIdx = last !== null ? parseInt(last, 10) : -1;
+        const idx = pickIndex(lastIdx);
+        el.textContent = FACTS[idx];
+        try { sessionStorage.setItem('lastFactIndex', String(idx)); } catch(_) {}
+      }
+
+      // On initial load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setFact, { once: true });
+      } else {
+        setFact();
+      }
+
+      // On BFCache restore (Back/Forward), rotate again so it changes when returning
+      window.addEventListener('pageshow', (e) => { if (e.persisted) setFact(); });
+    })();
+  </script>
 </body>
 </html>
 <!DOCTYPE html>
@@ -134,7 +188,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    /* Palette per request */
     :root {
       --bg: #302C45;      /* solid background */
       --panel: #3D375A;   /* card background */
@@ -168,8 +221,7 @@
       border-radius: 28px;
       background: var(--panel);
       box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      text-align: center; /* center everything inside */
-      /* Removed pop/fade-in animation to avoid fade when returning via Back */
+      text-align: center;
     }
 
     .brand {
@@ -184,7 +236,7 @@
     }
     .brand .name { font-size: clamp(40px, 9vw, 84px); font-weight: 600; line-height: .95; }
 
-    /* Equal spacing above and below the tagline (a bit larger) */
+    /* Equal spacing above and below the fact */
     .tagline { color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); margin: 0; }
     .brand + .tagline { margin-top: 1.75rem; }
     .tagline + .actions { margin-top: 1.75rem; }
@@ -227,7 +279,7 @@
         <span class="name">STRESS</span>
       </div>
 
-      <p class="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
+      <p class="tagline" id="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
 
       <div class="actions">
         <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
@@ -235,6 +287,62 @@
     </section>
   </div>
 
-  <!-- No JavaScript needed: native link navigation (fade removed) -->
+  <script>
+    // Rotate a random fun fact each time the page loads (and on BFCache restore)
+    (() => {
+      const el = document.getElementById('tagline');
+      if (!el) return;
+
+      const FACTS = [
+        'Octopuses have three hearts and blue blood.',
+        'Bananas are berries, but strawberries are not.',
+        'Koalas have fingerprints so similar to humans that they can confuse crime scenes.',
+        'Wombats poop in cubes. Nature is a designer.',
+        'Sharks existed before trees.',
+        'Nintendo was founded in 1889—before plastic was a thing.',
+        'The hashtag symbol is technically called an octothorpe.',
+        'Honey found in ancient Egyptian tombs is still edible.',
+        'The first recorded “computer bug” was a real moth found in 1947.',
+        'A group of flamingos is called a flamboyance.',
+        'There’s a basketball court hidden inside the U.S. Supreme Court building—nicknamed the Highest Court in the Land.',
+        'Cows and bison can crossbreed. Their offspring are called beefalo.',
+        'The Eiffel Tower can be about 15 cm taller in summer due to heat expansion.',
+        'Rabbits can’t vomit. (Evolution said: one-way only.)',
+        'Pac‑Man’s design was inspired by a pizza missing a slice (so the legend goes).',
+        'Avocados are technically giant berries.',
+        'A day on Venus is longer than its year.',
+        'Butterflies taste with their feet.',
+        'There are more possible chess games than atoms in the observable universe.',
+        'Hot water can sometimes freeze faster than cold water (the Mpemba effect).'
+      ];
+
+      function pickIndex(exclude) {
+        const n = FACTS.length;
+        if (n < 2) return 0;
+        let idx;
+        const rand = () => (window.crypto?.getRandomValues ? window.crypto.getRandomValues(new Uint32Array(1))[0] : Math.random() * 2**32) >>> 0;
+        do { idx = rand() % n; } while (idx === exclude);
+        return idx;
+      }
+
+      function setFact() {
+        const last = sessionStorage.getItem('lastFactIndex');
+        const lastIdx = last !== null ? parseInt(last, 10) : -1;
+        const idx = pickIndex(lastIdx);
+        el.textContent = FACTS[idx];
+        try { sessionStorage.setItem('lastFactIndex', String(idx)); } catch(_) {}
+      }
+
+      // On initial load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setFact, { once: true });
+      } else {
+        setFact();
+      }
+
+      // On BFCache restore (Back/Forward), rotate again so it changes when returning
+      window.addEventListener('pageshow', (e) => { if (e.persisted) setFact(); });
+    })();
+  </script>
 </body>
 </html>
