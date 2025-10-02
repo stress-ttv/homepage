@@ -167,9 +167,56 @@
       transform: scale(1.1);
       background-color: #b7aff2;
     }
+
+    /* Home (back to splash) circular icon button */
+.home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background-color: rgba(61, 55, 90, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  color: #bbaaf0;
+  text-decoration: none;
+  z-index: 1001; /* above nav */
+  transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
+}
+
+/* Slight hover/active without underline */
+.home-button:hover { transform: scale(1.06); background-color: rgba(61,55,90,0.5); }
+.home-button:active { transform: scale(0.98); }
+
+/* Remove the page-wide link underline effect for this icon */
+.home-button::after { display: none !important; }
+
+/* Icon sizing */
+.home-button svg { width: 22px; height: 22px; display: block; }
+
+/* Mobile tweaks so Home button doesn’t collide with centered nav */
+@media (max-width: 520px) {
+  .home-button { top: 14px; left: 14px; width: 40px; height: 40px; }
+  /* Optional: if you have the centered nav from qa.html */
+  nav { top: 14px; padding: 10px 16px; gap: 16px; }
+}
+
   </style>
 </head>
 <body>
+<!-- Home icon button back to splash (root). 
+     If your splash is not at '/', change href to the correct path (e.g., '/index.html' or '/splash.html'). -->
+<a class="home-button" href="/" aria-label="Back to home">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M3 11l9-7 9 7"/>
+    <path d="M9 22V12h6v10"/>
+  </svg>
+</a>
 
 <nav>
   <a href="qa.html" class="active">Q&A</a>
