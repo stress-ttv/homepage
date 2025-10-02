@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Stress</title>
   <meta name="description" content="Welcome — click to enter" />
   <meta property="og:title" content="Stress" />
@@ -21,79 +21,90 @@
       --muted: #B9B3D2;   /* secondary text */
       --accent: #8B5CF6;  /* violet accent */
       --ring: 0 0 0 0.6rem rgba(139, 92, 246, 0.14);
+      --maxw: 720px;
+      --radius: 28px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
     }
 
+    *, *::before, *::after { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
       margin: 0;
       color: var(--fg);
       background: var(--bg);
       font-family: "Barlow", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      overflow: hidden;
+      /* Allow the page to scroll on very small screens */
+      overflow: auto;
+      /* Respect mobile notches */
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .container {
       position: relative;
       display: grid;
       place-items: center;
-      min-height: 100%;
+      min-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
       isolation: isolate;
-      padding: 24px;
+      padding: clamp(16px, 4vw, 32px);
     }
 
     .card {
-      width: min(720px, 92vw);
-      padding: clamp(28px, 5vw, 48px);
-      border-radius: 28px;
+      width: min(92vw, var(--maxw));
+      padding: clamp(20px, 5vw, 48px);
+      border-radius: var(--radius);
       background: var(--panel);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.04) inset;
       text-align: center;
     }
 
     .brand {
-      display: inline-flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;
+      display: inline-flex; justify-content: center; align-items: center; gap: clamp(.6rem, 2.5vw, 1rem); flex-wrap: wrap;
       font-family: "Oswald", system-ui, sans-serif; letter-spacing: .02em; text-transform: uppercase;
     }
     .brand .avatar {
-      width: clamp(64px, 9vw, 112px); height: clamp(64px, 9vw, 112px);
+      width: clamp(60px, 18vw, 112px); height: clamp(60px, 18vw, 112px);
       aspect-ratio: 1 / 1;
       border-radius: 9999px; object-fit: cover; object-position: center; display: inline-block;
       box-shadow: 0 0 0 3px rgba(255,255,255,0.06), 0 6px 20px rgba(0,0,0,.35);
+      flex: 0 0 auto;
     }
-    .brand .name { font-size: clamp(40px, 9vw, 84px); font-weight: 600; line-height: .95; }
+    .brand .name { font-size: clamp(32px, 12vw, 84px); font-weight: 600; line-height: 1; word-break: break-word; }
 
-    /* Equal spacing above and below the fact */
-    .tagline { color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); margin: 0; }
-    .brand + .tagline { margin-top: 1.75rem; }
-    .tagline + .actions { margin-top: 1.75rem; }
+    .tagline { color: var(--muted); font-size: clamp(15px, 3.8vw, 20px); margin: 0; }
+    .brand + .tagline { margin-top: clamp(14px, 3.8vw, 28px); }
+    .tagline + .actions { margin-top: clamp(16px, 4.2vw, 28px); }
 
-    .actions { display: flex; justify-content: center; align-items: center; gap: .8rem; flex-wrap: wrap; }
+    .actions { display: flex; justify-content: center; align-items: stretch; gap: clamp(.5rem, 2.8vw, .8rem); flex-wrap: wrap; }
     .btn {
       --btn-bg: linear-gradient(180deg, color-mix(in oklab, var(--accent) 84%, white 6%), color-mix(in oklab, var(--accent) 64%, black 12%));
       position: relative; overflow: hidden;
       appearance: none; border: 0; cursor: pointer; user-select: none;
-      padding: .9rem 1.2rem; border-radius: 16px; font-weight: 600; letter-spacing: .02em;
+      padding: clamp(.8rem, 3.5vw, 1rem) clamp(1rem, 4.2vw, 1.2rem);
+      border-radius: 16px; font-weight: 600; letter-spacing: .02em;
       color: white; background: var(--btn-bg);
       box-shadow: 0 12px 30px color-mix(in oklab, var(--accent) 32%, black 72%), var(--ring);
-      transition: filter .2s ease, box-shadow .2s ease;
+      transition: filter .2s ease, box-shadow .2s ease, transform .12s ease;
       text-decoration: none; display: inline-flex; align-items: center; gap: .6rem;
+      min-height: 44px; min-width: 44px; /* touch target */
     }
+    .btn:active { transform: translateY(1px) scale(.995); }
     .btn::before {
       content: ""; position: absolute; inset: 0; transform: translateX(-120%);
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.12) 20%, rgba(255,255,255,.24) 35%, transparent 60%);
       pointer-events: none;
     }
-    .btn:hover::before { animation: sheen 900ms cubic-bezier(.2,.8,.2,1); }
+    @media (hover: hover) and (pointer: fine) { .btn:hover::before { animation: sheen 900ms cubic-bezier(.2,.8,.2,1); } }
     @keyframes sheen { to { transform: translateX(120%); } }
-    .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); }
+    @media (hover: hover) and (pointer: fine) { .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); } }
 
-    @media (prefers-reduced-motion: reduce) {
-      .btn::before, .btn:hover::before, .btn, .card { animation: none !important; transition: none !important; }
-    }
+    @media (prefers-reduced-motion: reduce) { .btn::before, .btn, .card { animation: none !important; transition: none !important; } }
 
-    @media (max-width: 420px) {
-      .actions { gap: .6rem; }
-      .btn { width: 100%; justify-content: center; }
+    /* Very small phones */
+    @media (max-width: 360px) {
+      .brand .name { font-size: clamp(28px, 11.5vw, 56px); }
+      .brand .avatar { width: clamp(52px, 16vw, 96px); height: clamp(52px, 16vw, 96px); }
     }
   </style>
 </head>
@@ -159,188 +170,12 @@
         try { sessionStorage.setItem('lastFactIndex', String(idx)); } catch(_) {}
       }
 
-      // On initial load
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', setFact, { once: true });
       } else {
         setFact();
       }
 
-      // On BFCache restore (Back/Forward), rotate again so it changes when returning
-      window.addEventListener('pageshow', (e) => { if (e.persisted) setFact(); });
-    })();
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stress</title>
-  <meta name="description" content="Welcome — click to enter" />
-  <meta property="og:title" content="Stress" />
-  <meta property="og:description" content="Welcome — click to enter" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://stwess.co/" />
-  <link rel="icon" type="image/png" sizes="160x160" href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #302C45;      /* solid background */
-      --panel: #3D375A;   /* card background */
-      --fg: #EDEAF7;      /* primary text */
-      --muted: #B9B3D2;   /* secondary text */
-      --accent: #8B5CF6;  /* violet accent */
-      --ring: 0 0 0 0.6rem rgba(139, 92, 246, 0.14);
-    }
-
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      color: var(--fg);
-      background: var(--bg);
-      font-family: "Barlow", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      overflow: hidden;
-    }
-
-    .container {
-      position: relative;
-      display: grid;
-      place-items: center;
-      min-height: 100%;
-      isolation: isolate;
-      padding: 24px;
-    }
-
-    .card {
-      width: min(720px, 92vw);
-      padding: clamp(28px, 5vw, 48px);
-      border-radius: 28px;
-      background: var(--panel);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      text-align: center;
-    }
-
-    .brand {
-      display: inline-flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;
-      font-family: "Oswald", system-ui, sans-serif; letter-spacing: .02em; text-transform: uppercase;
-    }
-    .brand .avatar {
-      width: clamp(64px, 9vw, 112px); height: clamp(64px, 9vw, 112px);
-      aspect-ratio: 1 / 1;
-      border-radius: 9999px; object-fit: cover; object-position: center; display: inline-block;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.06), 0 6px 20px rgba(0,0,0,.35);
-    }
-    .brand .name { font-size: clamp(40px, 9vw, 84px); font-weight: 600; line-height: .95; }
-
-    /* Equal spacing above and below the fact */
-    .tagline { color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); margin: 0; }
-    .brand + .tagline { margin-top: 1.75rem; }
-    .tagline + .actions { margin-top: 1.75rem; }
-
-    .actions { display: flex; justify-content: center; align-items: center; gap: .8rem; flex-wrap: wrap; }
-    .btn {
-      --btn-bg: linear-gradient(180deg, color-mix(in oklab, var(--accent) 84%, white 6%), color-mix(in oklab, var(--accent) 64%, black 12%));
-      position: relative; overflow: hidden;
-      appearance: none; border: 0; cursor: pointer; user-select: none;
-      padding: .9rem 1.2rem; border-radius: 16px; font-weight: 600; letter-spacing: .02em;
-      color: white; background: var(--btn-bg);
-      box-shadow: 0 12px 30px color-mix(in oklab, var(--accent) 32%, black 72%), var(--ring);
-      transition: filter .2s ease, box-shadow .2s ease;
-      text-decoration: none; display: inline-flex; align-items: center; gap: .6rem;
-    }
-    .btn::before {
-      content: ""; position: absolute; inset: 0; transform: translateX(-120%);
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.12) 20%, rgba(255,255,255,.24) 35%, transparent 60%);
-      pointer-events: none;
-    }
-    .btn:hover::before { animation: sheen 900ms cubic-bezier(.2,.8,.2,1); }
-    @keyframes sheen { to { transform: translateX(120%); } }
-    .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); }
-
-    @media (prefers-reduced-motion: reduce) {
-      .btn::before, .btn:hover::before, .btn, .card { animation: none !important; transition: none !important; }
-    }
-
-    @media (max-width: 420px) {
-      .actions { gap: .6rem; }
-      .btn { width: 100%; justify-content: center; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container" role="main">
-    <section class="card" aria-label="Intro">
-      <div class="brand" aria-label="Brand">
-        <img class="avatar" src="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj" alt="" aria-hidden="true" />
-        <span class="name">STRESS</span>
-      </div>
-
-      <p class="tagline" id="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
-
-      <div class="actions">
-        <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    // Rotate a random fun fact each time the page loads (and on BFCache restore)
-    (() => {
-      const el = document.getElementById('tagline');
-      if (!el) return;
-
-      const FACTS = [
-        'Octopuses have three hearts and blue blood.',
-        'Bananas are berries, but strawberries are not.',
-        'Koalas have fingerprints so similar to humans that they can confuse crime scenes.',
-        'Wombats poop in cubes. Nature is a designer.',
-        'Sharks existed before trees.',
-        'Nintendo was founded in 1889—before plastic was a thing.',
-        'The hashtag symbol is technically called an octothorpe.',
-        'Honey found in ancient Egyptian tombs is still edible.',
-        'The first recorded “computer bug” was a real moth found in 1947.',
-        'A group of flamingos is called a flamboyance.',
-        'There’s a basketball court hidden inside the U.S. Supreme Court building—nicknamed the Highest Court in the Land.',
-        'Cows and bison can crossbreed. Their offspring are called beefalo.',
-        'The Eiffel Tower can be about 15 cm taller in summer due to heat expansion.',
-        'Rabbits can’t vomit. (Evolution said: one-way only.)',
-        'Pac‑Man’s design was inspired by a pizza missing a slice (so the legend goes).',
-        'Avocados are technically giant berries.',
-        'A day on Venus is longer than its year.',
-        'Butterflies taste with their feet.',
-        'There are more possible chess games than atoms in the observable universe.',
-        'Hot water can sometimes freeze faster than cold water (the Mpemba effect).'
-      ];
-
-      function pickIndex(exclude) {
-        const n = FACTS.length;
-        if (n < 2) return 0;
-        let idx;
-        const rand = () => (window.crypto?.getRandomValues ? window.crypto.getRandomValues(new Uint32Array(1))[0] : Math.random() * 2**32) >>> 0;
-        do { idx = rand() % n; } while (idx === exclude);
-        return idx;
-      }
-
-      function setFact() {
-        const last = sessionStorage.getItem('lastFactIndex');
-        const lastIdx = last !== null ? parseInt(last, 10) : -1;
-        const idx = pickIndex(lastIdx);
-        el.textContent = FACTS[idx];
-        try { sessionStorage.setItem('lastFactIndex', String(idx)); } catch(_) {}
-      }
-
-      // On initial load
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setFact, { once: true });
-      } else {
-        setFact();
-      }
-
-      // On BFCache restore (Back/Forward), rotate again so it changes when returning
       window.addEventListener('pageshow', (e) => { if (e.persisted) setFact(); });
     })();
   </script>
