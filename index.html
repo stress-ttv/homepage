@@ -13,9 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    /* =============================
-       THEME VARIABLES
-       ============================= */
     :root {
       --bg: #0e0f12;      /* page background */
       --fg: #e8eaf0;      /* primary text */
@@ -28,9 +25,6 @@
       :root { --bg: #ffffff; --fg: #0d1020; --muted: #4c5573; --accent: #7a49ff; --accent-2: #0ea5e9; --ring: 0 0 0 0.6rem rgba(122,73,255,0.12); }
     }
 
-    /* =============================
-       BASE STYLES
-       ============================= */
     html, body { height: 100%; }
     body {
       margin: 0;
@@ -40,6 +34,8 @@
                   var(--bg);
       font-family: "Barlow", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       overflow: hidden;
+      opacity: 1; /* default visible; will be restored on pageshow */
+      transition: opacity .22s ease;
     }
     .container {
       position: relative;
@@ -50,7 +46,6 @@
       padding: 24px;
     }
 
-    /* Subtle animated noise/grain for a premium feel */
     .grain {
       position: absolute; inset: -100vmax; z-index: -1; opacity: .045; pointer-events: none;
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="1"/></svg>');
@@ -58,7 +53,6 @@
     }
     @keyframes shift { from { transform: translate3d(0,0,0) } to { transform: translate3d(-140px, -140px, 0) } }
 
-    /* Center card */
     .card {
       width: min(720px, 92vw);
       padding: clamp(28px, 5vw, 48px);
@@ -68,11 +62,10 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,0.03) inset;
       transform: translateY(6px);
       animation: pop 600ms cubic-bezier(.2,.8,.2,1) both;
-      text-align: center; /* center everything inside */
+      text-align: center;
     }
     @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
 
-    /* Logo / Wordmark */
     .brand {
       display: flex; justify-content: center; align-items: baseline; gap: .6rem; flex-wrap: wrap;
       font-family: "Oswald", system-ui, sans-serif; letter-spacing: .02em; text-transform: uppercase;
@@ -86,7 +79,6 @@
 
     .tagline { margin: .75rem 0 1.75rem; color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); }
 
-    /* Enter button */
     .actions { display: flex; justify-content: center; align-items: center; gap: .8rem; flex-wrap: wrap; }
     .btn {
       --btn-bg: linear-gradient(180deg, color-mix(in oklab, var(--accent) 84%, white 6%), color-mix(in oklab, var(--accent) 64%, black 12%));
@@ -99,7 +91,6 @@
       text-decoration: none; display: inline-flex; align-items: center; gap: .6rem;
     }
 
-    /* Replace bouncy hover with a subtle sheen sweep */
     .btn::before {
       content: ""; position: absolute; inset: 0; transform: translateX(-120%);
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.12) 20%, rgba(255,255,255,.24) 35%, transparent 60%);
@@ -109,17 +100,14 @@
     @keyframes sheen { to { transform: translateX(120%); } }
     .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); }
 
-    /* Footer microcopy */
     .micro { margin-top: 1.35rem; font-size: .9rem; color: var(--muted); text-align: center; }
     .micro a { color: inherit; opacity: .9; text-underline-offset: .18em; }
     .micro a:hover { opacity: 1; }
 
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .btn::before, .btn:hover::before, .btn, .card { animation: none !important; transition: none !important; }
     }
 
-    /* Responsive niceties */
     @media (max-width: 420px) {
       .actions { gap: .6rem; }
       .btn { width: 100%; justify-content: center; }
@@ -139,7 +127,6 @@
       <p class="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
 
       <div class="actions">
-        <!-- Destination set to /qa.html per request -->
         <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
       </div>
 
@@ -148,36 +135,56 @@
   </div>
 
   <script>
-    // Minimal script: click to fade + navigate; no auto-skip
+    // Minimal script: fade on click; restore on browser Back via 'pageshow' and 'visibilitychange'
     (() => {
       const enter = document.getElementById('enterBtn');
       if (!enter) return console.error('Splash: #enterBtn not found.');
 
       const DEST = enter.getAttribute('href') || '/';
 
-      function go() {
-        document.body.style.transition = 'opacity .22s ease';
+      function fadeOutAndGo() {
         document.body.style.opacity = '0';
         const DEV = new URLSearchParams(location.search).has('devtest');
         if (!DEV) setTimeout(() => window.location.assign(DEST), 160);
       }
 
+      function restore() {
+        // Ensure the splash is visible if we return via bfcache/back navigation
+        document.body.style.opacity = '1';
+      }
+
       enter.addEventListener('click', (e) => {
         e.preventDefault();
-        go();
+        fadeOutAndGo();
       });
 
-      // Dev self-tests (visit with ?devtest=1)
+      // Handle back/forward cache restores across browsers
+      window.addEventListener('pageshow', restore);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') restore();
+      });
+
+      // -----------------------------
+      // Dev self-tests (run with ?devtest=1)
+      // -----------------------------
       const DEV = new URLSearchParams(location.search).has('devtest');
       if (DEV) {
-        const count = document.querySelectorAll('#enterBtn').length;
-        console.assert(count === 1, `Expected 1 #enterBtn, found ${count}`);
-        const beforeOpacity = getComputedStyle(document.body).opacity;
+        // Test 1: exactly one CTA
+        console.assert(document.querySelectorAll('#enterBtn').length === 1, 'Expected 1 #enterBtn');
+
+        // Test 2: fade triggers
+        const before = getComputedStyle(document.body).opacity;
         enter.click();
         setTimeout(() => {
-          const afterOpacity = getComputedStyle(document.body).opacity;
-          console.assert(afterOpacity !== beforeOpacity, 'Expected body opacity to change after click');
-          console.log('[splash devtest] Tests passed');
+          const after = getComputedStyle(document.body).opacity;
+          console.assert(after !== before, 'Expected body opacity to change after click');
+
+          // Test 3: pageshow restore
+          document.body.style.opacity = '0';
+          window.dispatchEvent(new Event('pageshow'));
+          const restored = getComputedStyle(document.body).opacity;
+          console.assert(restored === '1', 'Expected body opacity to restore to 1 on pageshow');
+          console.log('[splash devtest] All tests passed.');
         }, 40);
       }
     })();
@@ -199,9 +206,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    /* =============================
-       THEME VARIABLES
-       ============================= */
     :root {
       --bg: #0e0f12;      /* page background */
       --fg: #e8eaf0;      /* primary text */
@@ -214,9 +218,6 @@
       :root { --bg: #ffffff; --fg: #0d1020; --muted: #4c5573; --accent: #7a49ff; --accent-2: #0ea5e9; --ring: 0 0 0 0.6rem rgba(122,73,255,0.12); }
     }
 
-    /* =============================
-       BASE STYLES
-       ============================= */
     html, body { height: 100%; }
     body {
       margin: 0;
@@ -226,6 +227,8 @@
                   var(--bg);
       font-family: "Barlow", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       overflow: hidden;
+      opacity: 1; /* default visible; will be restored on pageshow */
+      transition: opacity .22s ease;
     }
     .container {
       position: relative;
@@ -236,7 +239,6 @@
       padding: 24px;
     }
 
-    /* Subtle animated noise/grain for a premium feel */
     .grain {
       position: absolute; inset: -100vmax; z-index: -1; opacity: .045; pointer-events: none;
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="1"/></svg>');
@@ -244,7 +246,6 @@
     }
     @keyframes shift { from { transform: translate3d(0,0,0) } to { transform: translate3d(-140px, -140px, 0) } }
 
-    /* Center card */
     .card {
       width: min(720px, 92vw);
       padding: clamp(28px, 5vw, 48px);
@@ -254,11 +255,10 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,0.03) inset;
       transform: translateY(6px);
       animation: pop 600ms cubic-bezier(.2,.8,.2,1) both;
-      text-align: center; /* center everything inside */
+      text-align: center;
     }
     @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
 
-    /* Logo / Wordmark */
     .brand {
       display: flex; justify-content: center; align-items: baseline; gap: .6rem; flex-wrap: wrap;
       font-family: "Oswald", system-ui, sans-serif; letter-spacing: .02em; text-transform: uppercase;
@@ -272,7 +272,6 @@
 
     .tagline { margin: .75rem 0 1.75rem; color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); }
 
-    /* Enter button */
     .actions { display: flex; justify-content: center; align-items: center; gap: .8rem; flex-wrap: wrap; }
     .btn {
       --btn-bg: linear-gradient(180deg, color-mix(in oklab, var(--accent) 84%, white 6%), color-mix(in oklab, var(--accent) 64%, black 12%));
@@ -285,7 +284,6 @@
       text-decoration: none; display: inline-flex; align-items: center; gap: .6rem;
     }
 
-    /* Replace bouncy hover with a subtle sheen sweep */
     .btn::before {
       content: ""; position: absolute; inset: 0; transform: translateX(-120%);
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.12) 20%, rgba(255,255,255,.24) 35%, transparent 60%);
@@ -295,17 +293,14 @@
     @keyframes sheen { to { transform: translateX(120%); } }
     .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); }
 
-    /* Footer microcopy */
     .micro { margin-top: 1.35rem; font-size: .9rem; color: var(--muted); text-align: center; }
     .micro a { color: inherit; opacity: .9; text-underline-offset: .18em; }
     .micro a:hover { opacity: 1; }
 
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .btn::before, .btn:hover::before, .btn, .card { animation: none !important; transition: none !important; }
     }
 
-    /* Responsive niceties */
     @media (max-width: 420px) {
       .actions { gap: .6rem; }
       .btn { width: 100%; justify-content: center; }
@@ -325,7 +320,6 @@
       <p class="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
 
       <div class="actions">
-        <!-- Destination set to /qa.html per request -->
         <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
       </div>
 
@@ -334,36 +328,56 @@
   </div>
 
   <script>
-    // Minimal script: click to fade + navigate; no auto-skip
+    // Minimal script: fade on click; restore on browser Back via 'pageshow' and 'visibilitychange'
     (() => {
       const enter = document.getElementById('enterBtn');
       if (!enter) return console.error('Splash: #enterBtn not found.');
 
       const DEST = enter.getAttribute('href') || '/';
 
-      function go() {
-        document.body.style.transition = 'opacity .22s ease';
+      function fadeOutAndGo() {
         document.body.style.opacity = '0';
         const DEV = new URLSearchParams(location.search).has('devtest');
         if (!DEV) setTimeout(() => window.location.assign(DEST), 160);
       }
 
+      function restore() {
+        // Ensure the splash is visible if we return via bfcache/back navigation
+        document.body.style.opacity = '1';
+      }
+
       enter.addEventListener('click', (e) => {
         e.preventDefault();
-        go();
+        fadeOutAndGo();
       });
 
-      // Dev self-tests (visit with ?devtest=1)
+      // Handle back/forward cache restores across browsers
+      window.addEventListener('pageshow', restore);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') restore();
+      });
+
+      // -----------------------------
+      // Dev self-tests (run with ?devtest=1)
+      // -----------------------------
       const DEV = new URLSearchParams(location.search).has('devtest');
       if (DEV) {
-        const count = document.querySelectorAll('#enterBtn').length;
-        console.assert(count === 1, `Expected 1 #enterBtn, found ${count}`);
-        const beforeOpacity = getComputedStyle(document.body).opacity;
+        // Test 1: exactly one CTA
+        console.assert(document.querySelectorAll('#enterBtn').length === 1, 'Expected 1 #enterBtn');
+
+        // Test 2: fade triggers
+        const before = getComputedStyle(document.body).opacity;
         enter.click();
         setTimeout(() => {
-          const afterOpacity = getComputedStyle(document.body).opacity;
-          console.assert(afterOpacity !== beforeOpacity, 'Expected body opacity to change after click');
-          console.log('[splash devtest] Tests passed');
+          const after = getComputedStyle(document.body).opacity;
+          console.assert(after !== before, 'Expected body opacity to change after click');
+
+          // Test 3: pageshow restore
+          document.body.style.opacity = '0';
+          window.dispatchEvent(new Event('pageshow'));
+          const restored = getComputedStyle(document.body).opacity;
+          console.assert(restored === '1', 'Expected body opacity to restore to 1 on pageshow');
+          console.log('[splash devtest] All tests passed.');
         }, 40);
       }
     })();
