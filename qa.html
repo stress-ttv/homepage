@@ -2,34 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- mobile-safe viewport with notch support -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Q&A</title>
   <link rel="icon" href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj" />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Barlow+Condensed:ital,wght@1,500&display=swap" rel="stylesheet" />
+
   <style>
     html { scroll-behavior: smooth; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+
     body {
       font-family: 'Barlow', sans-serif;
       background-color: #302c45;
       margin: 0;
-      padding: 0;
+      padding:
+        calc(env(safe-area-inset-top)) 
+        env(safe-area-inset-right)
+        env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
       color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      /* allow tiny phones to scroll */
+      overflow: auto;
     }
 
+    /* ---------------- NAV ---------------- */
     nav {
       position: fixed;
-      top: 20px;
+      top: calc(20px + env(safe-area-inset-top));
       left: 50%;
       transform: translateX(-50%);
       background-color: rgba(61, 55, 90, 0.3);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding: 12px 24px;
+      padding: 12px 20px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       z-index: 999;
       display: flex;
-      gap: 24px;
+      gap: 18px;
+      flex-wrap: wrap;              /* allow wrap on small widths */
+      align-items: center;
+      justify-content: center;
+      max-width: min(92vw, 640px);  /* prevent overflow */
     }
 
     nav a {
@@ -37,6 +55,9 @@
       font-weight: bold;
       text-decoration: none;
       position: relative;
+      font-size: clamp(14px, 3.6vw, 16px);
+      line-height: 1.2;
+      padding: 6px 0;               /* touch space without shifting layout */
     }
 
     nav a::after {
@@ -47,19 +68,20 @@
       width: 0;
       height: 2px;
       background-color: #bbaaf0;
-      transition: width 0.3s ease;
+      transition: width 0.25s ease;
     }
 
-    nav a:hover::after { width: 100%; }
+    /* Active-only underline in nav (no hover underline here) */
+    nav a:hover::after { width: 0; }
     nav a.active::after { width: 100%; }
 
+    /* ---------------- LINKS (general content area) ---------------- */
     a {
       color: #bbaaf0;
       font-weight: bold;
       text-decoration: none;
       position: relative;
     }
-
     a::after {
       content: '';
       position: absolute;
@@ -70,84 +92,102 @@
       background-color: #bbaaf0;
       transition: width 0.3s ease;
     }
-
     a:hover::after { width: 100%; }
 
+    /* ---------------- CARD ---------------- */
     .card {
       background-color: #3d375a;
       border-radius: 12px;
-      padding: 32px 24px;
-      max-width: 600px;
-      margin: 100px auto 60px auto;
+      padding: clamp(20px, 5vw, 32px) clamp(18px, 4.5vw, 24px);
+      max-width: 720px;
+      width: min(92vw, 720px);
+      margin: calc(110px + env(safe-area-inset-top)) auto 60px auto; /* leave room for fixed nav/home */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 42px;
+      font-size: clamp(28px, 7vw, 42px);
       font-style: italic;
       text-transform: uppercase;
       text-align: left;
-      margin-bottom: 40px;
-      line-height: 1.1;
+      margin: 0 0 28px 0;
+      line-height: 1.08;
     }
 
-    .qa-pair {
-      margin-bottom: 32px;
-    }
-
+    .qa-pair { margin-bottom: clamp(20px, 4.5vw, 32px); }
     .qa-pair p:first-child {
-      font-weight: bold;
-      margin-bottom: 6px;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+      font-size: clamp(16px, 4vw, 18px);
+      line-height: 1.25;
     }
-
     .qa-pair p:last-child {
       margin: 0;
-      line-height: 1.5;
+      line-height: 1.55;
+      font-size: clamp(15px, 3.6vw, 17px);
     }
 
     footer {
       text-align: center;
-      margin-top: 40px;
-      margin-bottom: 60px;
+      margin: 24px 0 60px;
     }
 
+    /* Twitch link: no underline effect */
     .twitch-link {
       display: inline-block;
       transition: transform 0.2s ease;
     }
-
-    .twitch-link:hover {
-      transform: scale(1.1);
-    }
-
-    .twitch-link::after {
-      display: none !important;
-    }
+    .twitch-link:hover { transform: scale(1.08); }
+    .twitch-link::after { display: none !important; }
 
     .twitch-icon {
       width: 36px;
       height: 36px;
       vertical-align: middle;
     }
-
     .caption {
       margin-top: 8px;
-      font-size: 0.9rem;
+      font-size: clamp(12px, 3.2vw, 14px);
       color: #c5c0e3;
       font-style: italic;
     }
 
+    /* ---------------- HOME BUTTON ---------------- */
+    .home-button {
+      position: fixed;
+      top: calc(20px + env(safe-area-inset-top));
+      left: calc(20px + env(safe-area-inset-left));
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background-color: rgba(61, 55, 90, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
+      color: #bbaaf0;
+      text-decoration: none;
+      z-index: 1001; /* above nav */
+      transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
+    }
+    .home-button:hover { transform: scale(1.06); background-color: rgba(61,55,90,0.5); }
+    .home-button:active { transform: scale(0.98); }
+    .home-button::after { display: none !important; }
+    .home-button svg { width: 22px; height: 22px; display: block; }
+
+    /* ---------------- BACK TO TOP ---------------- */
     .back-to-top-button {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: calc(24px + env(safe-area-inset-bottom));
+      right: calc(24px + env(safe-area-inset-right));
       background-color: #9f95da;
       color: #302c45;
       border: none;
       border-radius: 50%;
-      width: 42px;
-      height: 42px;
+      width: 48px;      /* >=44px touch target */
+      height: 48px;
       font-size: 20px;
       font-weight: bold;
       cursor: pointer;
@@ -157,240 +197,198 @@
       pointer-events: none;
       z-index: 100;
     }
+    .back-to-top-button.show { opacity: 1; pointer-events: auto; }
+    .back-to-top-button:hover { transform: scale(1.08); background-color: #b7aff2; }
 
-    .back-to-top-button.show {
-      opacity: 1;
-      pointer-events: auto;
+    /* ---------------- MOBILE TWEAKS ---------------- */
+    @media (max-width: 520px) {
+      nav { padding: 10px 14px; gap: 14px; max-width: 94vw; }
+      .home-button { top: calc(14px + env(safe-area-inset-top)); left: calc(14px + env(safe-area-inset-left)); width: 40px; height: 40px; }
+      .card { margin-top: calc(104px + env(safe-area-inset-top)); }
     }
-
-    .back-to-top-button:hover {
-      transform: scale(1.1);
-      background-color: #b7aff2;
-    }
-
-    /* Home (back to splash) circular icon button */
-.home-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  background-color: rgba(61, 55, 90, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
-  color: #bbaaf0;
-  text-decoration: none;
-  z-index: 1001; /* above nav */
-  transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
-}
-
-/* Slight hover/active without underline */
-.home-button:hover { transform: scale(1.06); background-color: rgba(61,55,90,0.5); }
-.home-button:active { transform: scale(0.98); }
-
-/* Remove the page-wide link underline effect for this icon */
-.home-button::after { display: none !important; }
-
-/* Icon sizing */
-.home-button svg { width: 22px; height: 22px; display: block; }
-
-/* Mobile tweaks so Home button doesn’t collide with centered nav */
-@media (max-width: 520px) {
-  .home-button { top: 14px; left: 14px; width: 40px; height: 40px; }
-  /* Optional: if you have the centered nav from qa.html */
-  nav { top: 14px; padding: 10px 16px; gap: 16px; }
-}
-
   </style>
 </head>
 <body>
-<!-- Home icon button back to splash (root). 
-     If your splash is not at '/', change href to the correct path (e.g., '/index.html' or '/splash.html'). -->
-<a class="home-button" href="/" aria-label="Back to home">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M3 11l9-7 9 7"/>
-    <path d="M9 22V12h6v10"/>
-  </svg>
-</a>
+  <!-- Home icon button back to splash (root).
+       If your splash isn't at '/', change href to the correct path (e.g., '/index.html'). -->
+  <a class="home-button" href="/" aria-label="Back to home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 11l9-7 9 7"/>
+      <path d="M9 22V12h6v10"/>
+    </svg>
+  </a>
 
-<nav>
-  <a href="qa.html" class="active">Q&A</a>
-  <a href="rules.html">Rules</a>
-  <a href="credits.html">Credits</a>
-  <a href="commands.html">Commands</a>
-</nav>
+  <nav>
+    <a href="qa.html" class="active">Q&A</a>
+    <a href="rules.html">Rules</a>
+    <a href="credits.html">Credits</a>
+    <a href="commands.html">Commands</a>
+  </nav>
 
-<div class="card">
-  <a id="top"></a>
-  <h1>Know Thy Streamer</h1>
+  <div class="card">
+    <a id="top"></a>
+    <h1>Know Thy Streamer</h1>
 
     <div class="qa-pair">
-    <p>What’s the dumbest way you’ve ever injured yourself?</p>
-    <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
+      <p>What’s the dumbest way you’ve ever injured yourself?</p>
+      <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What food would you eat every day if your body wouldn’t betray you?</p>
+      <p>Carbs. If bread is wrong, I don’t want to be right.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s something that instantly makes you rage (but only a little)?</p>
+      <p>Wet socks, people who litter, and being perceived.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s your toxic trait in co-op games?</p>
+      <p>Trolling. Just a smidge of menace for flavor.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s your comfort game and what does it say about you?</p>
+      <p>Competitive shooters. I enjoy being humbled by 12-year-olds.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>Which video game character would you simp for?</p>
+      <p><a href="https://i.redd.it/srqr67wlaxp81.jpg" target="_blank" rel="noopener noreferrer">Wattson</a> from Apex. I’d let her electrify my whole life tbh.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s something you irrationally hated as a kid?</p>
+      <p>Glitter. It’s the herpes of the craft world.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What would be your weapon of choice in a zombie apocalypse?</p>
+      <p>Machete. Ain't nobody got time to reload.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What song would you absolutely crush in karaoke (or think you would)?</p>
+      <p><a href="https://www.youtube.com/watch?v=U_JFLb1IItM&list=RDU_JFLb1IItM&start_radio=1" target="_blank" rel="noopener noreferrer">Tequila</a> by The Champs. Iconic. Catchy. One word.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s a useless skill you’re secretly proud of?</p>
+      <p>Spinning my tennis racket like I’m summoning wind magic.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s your most irrational fear?</p>
+      <p>Being late and missing the school bus. I’m in my 30s.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>If you had to be haunted by a ghost, who would you want it to be?</p>
+      <p><a href="https://cdn.mos.cms.futurecdn.net/5yUsfce2ijMrvQMRQSSDeR-1200-80.jpg" target="_blank" rel="noopener noreferrer">Casper</a>. He seems chill and emotionally available.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>Which game do you pretend to like because everyone else does?</p>
+      <p>Pokémon. I like it, but not 900+ creatures worth of like.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What fictional food do you wish you could eat in real life?</p>
+      <p><a href="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/07/1000995840.jpg?q=70&fit=contain&w=1200&h=628&dpr=1" target="_blank" rel="noopener noreferrer">Senzu beans</a>. If you’re old like me, this should be the only answer.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What minor inconvenience instantly ruins your day?</p>
+      <p>Food stuck in my teeth. Nothing ruins a good vibe like rogue spinach.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s a game you wish you could experience again for the first time?</p>
+      <p>Apex Legends. First time was magical. Now it’s emotional damage.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>Which “reliable” tech items always betray you?</p>
+      <p>My PC and mic. They’re in a toxic relationship and I’m just in the middle.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s the weirdest thing you believed as a kid?</p>
+      <p>I believed people had superpowers. Like, <a href="https://images7.alphacoders.com/317/317485.png" target="_blank" rel="noopener noreferrer">Kamehameha</a> superpowers.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s something you do that makes you feel like you have your life together?</p>
+      <p>Making my bed. It’s the illusion of control I need.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s something completely normal that gives you the ick?</p>
+      <p>Yogurt. It’s basically tangy, bacteria-curdled milk goo.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s something small that irrationally stresses you out?</p>
+      <p>Dust. It appears out of nowhere like it pays rent.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>How long is “five more minutes” when you’re in bed?</p>
+      <p>One entire feature film. The snooze button is a textbook enabler.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>If you could tell your past self one piece of advice, what would it be?</p>
+      <p>For the love of God, take care of your mental health. Therapy and meds are expensive.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s your “this shouldn’t be a personality trait, but it is” thing?</p>
+      <p>Wanting everything to be clean. My standards are fighting my energy levels daily.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What is something you’re very competitive about that does not matter at all?</p>
+      <p>Tennis. Hitting green, fuzzy balls is serious business.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What fictional world would you move to if it wasn’t dangerous?</p>
+      <p>One Piece. I want the adventure, not the trauma.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What’s something you’d do more of if you weren’t afraid of judgment?</p>
+      <p>Go outside. Sunlight makes me less feral, but I have severe anxiety.</p>
+    </div>
+
+    <div class="qa-pair">
+      <p>What do you daydream about the most?</p>
+      <p>You.</p>
+    </div>
   </div>
 
-     <div class="qa-pair">
-    <p>What food would you eat every day if your body wouldn’t betray you?</p>
-    <p>Carbs. If bread is wrong, I don’t want to be right.</p>
-  </div>
+  <footer>
+    <a href="https://twitch.tv/stress" target="_blank" class="twitch-link" rel="noopener noreferrer">
+      <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
+    </a>
+    <div class="caption">Watch me suffer live.</div>
+  </footer>
 
-     <div class="qa-pair">
-    <p>What’s something that instantly makes you rage (but only a little)?</p>
-    <p>Wet socks, people who litter, and being perceived.</p>
-  </div>
+  <button class="back-to-top-button" id="backToTop" aria-label="Back to top">↑</button>
 
-     <div class="qa-pair">
-    <p>What’s your toxic trait in co-op games?</p>
-    <p>Trolling. Just a smidge of menace for flavor.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What’s your comfort game and what does it say about you?</p>
-    <p>Competitive shooters. I enjoy being humbled by 12-year-olds.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>Which video game character would you simp for?</p>
-    <p><a href="https://i.redd.it/srqr67wlaxp81.jpg" target="_blank" rel="noopener noreferrer">Wattson</a> from Apex. I’d let her electrify my whole life tbh.</p>
-  </div>
-
-        <div class="qa-pair">
-    <p>What’s something you irrationally hated as a kid?</p>
-    <p>Glitter. It’s the herpes of the craft world.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What would be your weapon of choice in a zombie apocalypse?</p>
-    <p>Machete. Ain't nobody got time to reload.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What song would you absolutely crush in karaoke (or think you would)?</p>
-    <p><a href="https://www.youtube.com/watch?v=U_JFLb1IItM&list=RDU_JFLb1IItM&start_radio=1" target="_blank" rel="noopener noreferrer">Tequila</a> by The Champs. Iconic. Catchy. One word.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What’s a useless skill you’re secretly proud of?</p>
-    <p>Spinning my tennis racket like I’m summoning wind magic.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What’s your most irrational fear?</p>
-    <p>Being late and missing the school bus. I’m in my 30s.</p>
-  </div>
-
-        <div class="qa-pair">
-    <p>If you had to be haunted by a ghost, who would you want it to be?</p>
-    <p><a href="https://cdn.mos.cms.futurecdn.net/5yUsfce2ijMrvQMRQSSDeR-1200-80.jpg" target="_blank" rel="noopener noreferrer">Casper</a>. He seems chill and emotionally available.</p>
-  </div>
-
-        <div class="qa-pair">
-    <p>Which game do you pretend to like because everyone else does?</p>
-    <p>Pokémon. I like it, but not 900+ creatures worth of like.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What fictional food do you wish you could eat in real life?</p>
-    <p><a href="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/07/1000995840.jpg?q=70&fit=contain&w=1200&h=628&dpr=1" target="_blank" rel="noopener noreferrer">Senzu beans</a>. If you’re old like me, this should be the only answer.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What minor inconvenience instantly ruins your day?</p>
-    <p>Food stuck in my teeth. Nothing ruins a good vibe like rogue spinach.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What’s a game you wish you could experience again for the first time?</p>
-    <p>Apex Legends. First time was magical. Now it’s emotional damage.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>Which “reliable” tech items always betray you?</p>
-    <p>My PC and mic. They’re in a toxic relationship and I’m just in the middle.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What’s the weirdest thing you believed as a kid?</p>
-    <p>I believed people had superpowers. Like, <a href="https://images7.alphacoders.com/317/317485.png" target="_blank" rel="noopener noreferrer">Kamehameha</a> superpowers.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What’s something you do that makes you feel like you have your life together?</p>
-    <p>Making my bed. It’s the illusion of control I need.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What’s something completely normal that gives you the ick?</p>
-    <p>Yogurt. It’s basically tangy, bacteria-curdled milk goo.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What’s something small that irrationally stresses you out?</p>
-    <p>Dust. It appears out of nowhere like it pays rent.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>How long is “five more minutes” when you’re in bed?</p>
-    <p>One entire feature film. The snooze button is a textbook enabler.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>If you could tell your past self one piece of advice, what would it be?</p>
-    <p>For the love of God, take care of your mental health. Therapy and meds are expensive.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What’s your “this shouldn’t be a personality trait, but it is” thing?</p>
-    <p>Wanting everything to be clean. My standards are fighting my energy levels daily.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What is something you’re very competitive about that does not matter at all?</p>
-    <p>Tennis. Hitting green, fuzzy balls is serious business.</p>
-  </div>
-
-              <div class="qa-pair">
-    <p>What fictional world would you move to if it wasn’t dangerous?</p>
-    <p>One Piece. I want the adventure, not the trauma.</p>
-  </div>
-
-              <div class="qa-pair">
-    <p>What’s something you’d do more of if you weren’t afraid of judgment?</p>
-    <p>Go outside. Sunlight makes me less feral, but I have severe anxiety.</p>
-  </div>
-
-              <div class="qa-pair">
-    <p>What do you daydream about the most?</p>
-    <p>You.</p>
-  </div>
-
-</div>
-
-<footer>
-  <a href="https://twitch.tv/stress" target="_blank" class="twitch-link">
-    <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
-  </a>
-  <div class="caption">Watch me suffer live.</div>
-</footer>
-
-<button class="back-to-top-button" id="backToTop">↑</button>
-
-<script>
-  const backToTopBtn = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
-    backToTopBtn.classList.toggle('show', scrollPosition > 150);
-  });
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-</script>
-
+  <script>
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+      backToTopBtn.classList.toggle('show', scrollPosition > 150);
+    });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
-
