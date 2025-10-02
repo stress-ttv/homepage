@@ -3,106 +3,184 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>STRESS — Enter</title>
-  <meta name="description" content="Click STRESS to enter" />
+  <title>stwess.co — Enter</title>
+  <meta name="description" content="Welcome to stwess.co — click to enter" />
+  <meta property="og:title" content="stwess.co — Enter" />
+  <meta property="og:description" content="Welcome to stwess.co — click to enter" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stwess.co/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
+    /* =============================
+       THEME VARIABLES
+       ============================= */
     :root {
-      --bg: #0e0f12;     /* background */
-      --fg: #e8eaf0;     /* text */
-      --accent: #9a6cff; /* brand accent */
+      --bg: #0e0f12;      /* page background */
+      --fg: #e8eaf0;      /* primary text */
+      --muted: #a9afc6;   /* secondary text */
+      --accent: #9a6cff;  /* brand accent */
+      --accent-2: #38bdf8;/* subtle secondary accent */
+      --ring: 0 0 0 0.6rem rgba(154,108,255,0.14);
     }
     @media (prefers-color-scheme: light) {
-      :root { --bg: #ffffff; --fg: #0d1020; --accent: #7a49ff; }
+      :root { --bg: #ffffff; --fg: #0d1020; --muted: #4c5573; --accent: #7a49ff; --accent-2: #0ea5e9; --ring: 0 0 0 0.6rem rgba(122,73,255,0.12); }
     }
 
+    /* =============================
+       BASE STYLES
+       ============================= */
     html, body { height: 100%; }
     body {
       margin: 0;
-      display: grid;
-      place-items: center;
-      height: 100svh;
-      background:
-        radial-gradient(1100px 800px at 70% -10%, rgba(154,108,255,0.14), transparent 60%),
-        radial-gradient(900px 600px at 10% 115%, rgba(154,108,255,0.08), transparent 60%),
-        var(--bg);
       color: var(--fg);
-      font-family: "Oswald", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+      background: radial-gradient(1200px 900px at 70% -10%, rgba(154,108,255,0.16), transparent 60%),
+                  radial-gradient(1000px 700px at 20% 110%, rgba(14,165,233,0.12), transparent 60%),
+                  var(--bg);
+      font-family: "Barlow", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       overflow: hidden;
     }
-
-    /* Big clickable wordmark */
-    a#enter {
+    .container {
       position: relative;
-      display: inline-block;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      line-height: 0.9;
-      font-weight: 700;
-      font-size: clamp(64px, 18vw, 220px);
-      color: var(--fg);
-      cursor: pointer;
-      transition: transform .15s ease;
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      isolation: isolate;
+      padding: 24px;
     }
-    /* Subtle animated underline on hover */
-    a#enter::after {
-      content: "";
-      position: absolute;
-      left: 0; right: 0; bottom: -.08em;
-      height: .12em;
-      background: var(--accent);
-      transform: scaleX(0.12);
-      transform-origin: left;
-      transition: transform .25s cubic-bezier(.2,.8,.2,1);
+
+    /* Subtle animated noise/grain for a premium feel */
+    .grain {
+      position: absolute; inset: -100vmax; z-index: -1; opacity: .045; pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="1"/></svg>');
+      animation: shift 24s linear infinite;
     }
-    a#enter:hover { transform: translateY(-1px); }
-    a#enter:hover::after { transform: scaleX(1); }
-    a#enter:active { transform: translateY(1px) scale(.995); }
+    @keyframes shift { from { transform: translate3d(0,0,0) } to { transform: translate3d(-140px, -140px, 0) } }
 
-    /* small helper text for a11y */
-    .hint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font: 600 14px/1.2 "Barlow", system-ui, sans-serif; opacity: .7; }
+    /* Center card */
+    .card {
+      width: min(720px, 92vw);
+      padding: clamp(28px, 5vw, 48px);
+      border-radius: 28px;
+      background: color-mix(in oklab, var(--bg) 86%, white 14%);
+      backdrop-filter: blur(6px) saturate(1.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      transform: translateY(6px);
+      animation: pop 600ms cubic-bezier(.2,.8,.2,1) both;
+      text-align: center; /* center everything inside */
+    }
+    @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
 
-    /* Reduce motion */
+    /* Logo / Wordmark */
+    .brand {
+      display: flex; justify-content: center; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+      font-family: "Oswald", system-ui, sans-serif; letter-spacing: .02em; text-transform: uppercase;
+    }
+    .brand .name { font-size: clamp(40px, 9vw, 84px); font-weight: 600; line-height: .95; }
+    .brand .dot {
+      position: relative; top: -.2em; display: inline-block; width: .48em; height: .48em; border-radius: 999px;
+      background: radial-gradient(40% 40% at 40% 35%, white 0 30%, transparent 31%), var(--accent);
+      box-shadow: 0 0 0 .12em color-mix(in oklab, var(--accent) 60%, black 12%), 0 12px 30px color-mix(in oklab, var(--accent) 30%, black 70%);
+    }
+
+    .tagline { margin: .75rem 0 1.75rem; color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); }
+
+    /* Enter button */
+    .actions { display: flex; justify-content: center; align-items: center; gap: .8rem; flex-wrap: wrap; }
+    .btn {
+      --btn-bg: linear-gradient(180deg, color-mix(in oklab, var(--accent) 84%, white 6%), color-mix(in oklab, var(--accent) 64%, black 12%));
+      position: relative; overflow: hidden;
+      appearance: none; border: 0; cursor: pointer; user-select: none;
+      padding: .9rem 1.2rem; border-radius: 16px; font-weight: 600; letter-spacing: .02em;
+      color: white; background: var(--btn-bg);
+      box-shadow: 0 12px 30px color-mix(in oklab, var(--accent) 32%, black 72%), var(--ring);
+      transition: filter .2s ease, box-shadow .2s ease;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .6rem;
+    }
+
+    /* Replace bouncy hover with a subtle sheen sweep */
+    .btn::before {
+      content: ""; position: absolute; inset: 0; transform: translateX(-120%);
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.12) 20%, rgba(255,255,255,.24) 35%, transparent 60%);
+      pointer-events: none;
+    }
+    .btn:hover::before { animation: sheen 900ms cubic-bezier(.2,.8,.2,1); }
+    @keyframes sheen { to { transform: translateX(120%); } }
+    .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); }
+
+    /* Footer microcopy */
+    .micro { margin-top: 1.35rem; font-size: .9rem; color: var(--muted); text-align: center; }
+    .micro a { color: inherit; opacity: .9; text-underline-offset: .18em; }
+    .micro a:hover { opacity: 1; }
+
+    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      a#enter, a#enter::after { transition: none; }
+      .btn::before, .btn:hover::before, .btn, .card { animation: none !important; transition: none !important; }
+    }
+
+    /* Responsive niceties */
+    @media (max-width: 420px) {
+      .actions { gap: .6rem; }
+      .btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 <body>
-  <!-- Only one thing to do: click STRESS -->
-  <a id="enter" href="/qa/" aria-label="Enter site">STRESS</a>
-  <div class="hint" aria-hidden="true">Press Enter to continue</div>
+  <div class="container" role="main">
+    <div class="grain" aria-hidden="true"></div>
 
-  <noscript>
-    <div style="position:fixed; bottom:8px; left:50%; transform:translateX(-50%); font:600 14px/1.2 Barlow, system-ui;">
-      JavaScript disabled — <a href="/qa/" style="color:inherit; text-decoration:underline">click here to enter</a>
-    </div>
-  </noscript>
+    <section class="card" aria-label="Intro">
+      <div class="brand" aria-label="Brand">
+        <span class="name">STWESS</span>
+        <span class="dot" aria-hidden="true"></span>
+      </div>
+
+      <p class="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
+
+      <div class="actions">
+        <!-- Destination set to /qa.html per request -->
+        <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
+      </div>
+
+      <p class="micro">HTTPS auto-enabled via GitHub Pages once DNS is ready.</p>
+    </section>
+  </div>
 
   <script>
-    // Minimal behavior: clicking the wordmark or pressing Enter navigates to the main site
-    const enter = document.getElementById('enter');
-    const DEST = enter.getAttribute('href');
+    // Minimal script: click to fade + navigate; no auto-skip
+    (() => {
+      const enter = document.getElementById('enterBtn');
+      if (!enter) return console.error('Splash: #enterBtn not found.');
 
-    function go() {
-      // Mark so you can optionally skip splash for returning visitors
-      localStorage.setItem('skipSplash', '1');
-      document.body.style.transition = 'opacity .2s ease';
-      document.body.style.opacity = '0';
-      setTimeout(() => window.location.assign(DEST), 140);
-    }
+      const DEST = enter.getAttribute('href') || '/';
 
-    enter.addEventListener('click', (e) => { e.preventDefault(); go(); });
-    window.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+      function go() {
+        document.body.style.transition = 'opacity .22s ease';
+        document.body.style.opacity = '0';
+        const DEV = new URLSearchParams(location.search).has('devtest');
+        if (!DEV) setTimeout(() => window.location.assign(DEST), 160);
+      }
 
-    // Optional: auto-bypass on return visitors (toggle true if desired)
-    const autoSkipForReturning = false; // set to true to skip automatically after first visit
-    if (autoSkipForReturning && localStorage.getItem('skipSplash') === '1') {
-      setTimeout(go, 200);
-    }
+      enter.addEventListener('click', (e) => {
+        e.preventDefault();
+        go();
+      });
+
+      // Dev self-tests (visit with ?devtest=1)
+      const DEV = new URLSearchParams(location.search).has('devtest');
+      if (DEV) {
+        const count = document.querySelectorAll('#enterBtn').length;
+        console.assert(count === 1, `Expected 1 #enterBtn, found ${count}`);
+        const beforeOpacity = getComputedStyle(document.body).opacity;
+        enter.click();
+        setTimeout(() => {
+          const afterOpacity = getComputedStyle(document.body).opacity;
+          console.assert(afterOpacity !== beforeOpacity, 'Expected body opacity to change after click');
+          console.log('[splash devtest] Tests passed');
+        }, 40);
+      }
+    })();
   </script>
 </body>
 </html>
@@ -111,106 +189,184 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>STRESS — Enter</title>
-  <meta name="description" content="Click STRESS to enter" />
+  <title>stwess.co — Enter</title>
+  <meta name="description" content="Welcome to stwess.co — click to enter" />
+  <meta property="og:title" content="stwess.co — Enter" />
+  <meta property="og:description" content="Welcome to stwess.co — click to enter" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stwess.co/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
+    /* =============================
+       THEME VARIABLES
+       ============================= */
     :root {
-      --bg: #0e0f12;     /* background */
-      --fg: #e8eaf0;     /* text */
-      --accent: #9a6cff; /* brand accent */
+      --bg: #0e0f12;      /* page background */
+      --fg: #e8eaf0;      /* primary text */
+      --muted: #a9afc6;   /* secondary text */
+      --accent: #9a6cff;  /* brand accent */
+      --accent-2: #38bdf8;/* subtle secondary accent */
+      --ring: 0 0 0 0.6rem rgba(154,108,255,0.14);
     }
     @media (prefers-color-scheme: light) {
-      :root { --bg: #ffffff; --fg: #0d1020; --accent: #7a49ff; }
+      :root { --bg: #ffffff; --fg: #0d1020; --muted: #4c5573; --accent: #7a49ff; --accent-2: #0ea5e9; --ring: 0 0 0 0.6rem rgba(122,73,255,0.12); }
     }
 
+    /* =============================
+       BASE STYLES
+       ============================= */
     html, body { height: 100%; }
     body {
       margin: 0;
-      display: grid;
-      place-items: center;
-      height: 100svh;
-      background:
-        radial-gradient(1100px 800px at 70% -10%, rgba(154,108,255,0.14), transparent 60%),
-        radial-gradient(900px 600px at 10% 115%, rgba(154,108,255,0.08), transparent 60%),
-        var(--bg);
       color: var(--fg);
-      font-family: "Oswald", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+      background: radial-gradient(1200px 900px at 70% -10%, rgba(154,108,255,0.16), transparent 60%),
+                  radial-gradient(1000px 700px at 20% 110%, rgba(14,165,233,0.12), transparent 60%),
+                  var(--bg);
+      font-family: "Barlow", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       overflow: hidden;
     }
-
-    /* Big clickable wordmark */
-    a#enter {
+    .container {
       position: relative;
-      display: inline-block;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      line-height: 0.9;
-      font-weight: 700;
-      font-size: clamp(64px, 18vw, 220px);
-      color: var(--fg);
-      cursor: pointer;
-      transition: transform .15s ease;
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      isolation: isolate;
+      padding: 24px;
     }
-    /* Subtle animated underline on hover */
-    a#enter::after {
-      content: "";
-      position: absolute;
-      left: 0; right: 0; bottom: -.08em;
-      height: .12em;
-      background: var(--accent);
-      transform: scaleX(0.12);
-      transform-origin: left;
-      transition: transform .25s cubic-bezier(.2,.8,.2,1);
+
+    /* Subtle animated noise/grain for a premium feel */
+    .grain {
+      position: absolute; inset: -100vmax; z-index: -1; opacity: .045; pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="1"/></svg>');
+      animation: shift 24s linear infinite;
     }
-    a#enter:hover { transform: translateY(-1px); }
-    a#enter:hover::after { transform: scaleX(1); }
-    a#enter:active { transform: translateY(1px) scale(.995); }
+    @keyframes shift { from { transform: translate3d(0,0,0) } to { transform: translate3d(-140px, -140px, 0) } }
 
-    /* small helper text for a11y */
-    .hint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font: 600 14px/1.2 "Barlow", system-ui, sans-serif; opacity: .7; }
+    /* Center card */
+    .card {
+      width: min(720px, 92vw);
+      padding: clamp(28px, 5vw, 48px);
+      border-radius: 28px;
+      background: color-mix(in oklab, var(--bg) 86%, white 14%);
+      backdrop-filter: blur(6px) saturate(1.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      transform: translateY(6px);
+      animation: pop 600ms cubic-bezier(.2,.8,.2,1) both;
+      text-align: center; /* center everything inside */
+    }
+    @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
 
-    /* Reduce motion */
+    /* Logo / Wordmark */
+    .brand {
+      display: flex; justify-content: center; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+      font-family: "Oswald", system-ui, sans-serif; letter-spacing: .02em; text-transform: uppercase;
+    }
+    .brand .name { font-size: clamp(40px, 9vw, 84px); font-weight: 600; line-height: .95; }
+    .brand .dot {
+      position: relative; top: -.2em; display: inline-block; width: .48em; height: .48em; border-radius: 999px;
+      background: radial-gradient(40% 40% at 40% 35%, white 0 30%, transparent 31%), var(--accent);
+      box-shadow: 0 0 0 .12em color-mix(in oklab, var(--accent) 60%, black 12%), 0 12px 30px color-mix(in oklab, var(--accent) 30%, black 70%);
+    }
+
+    .tagline { margin: .75rem 0 1.75rem; color: var(--muted); font-size: clamp(16px, 2.6vw, 20px); }
+
+    /* Enter button */
+    .actions { display: flex; justify-content: center; align-items: center; gap: .8rem; flex-wrap: wrap; }
+    .btn {
+      --btn-bg: linear-gradient(180deg, color-mix(in oklab, var(--accent) 84%, white 6%), color-mix(in oklab, var(--accent) 64%, black 12%));
+      position: relative; overflow: hidden;
+      appearance: none; border: 0; cursor: pointer; user-select: none;
+      padding: .9rem 1.2rem; border-radius: 16px; font-weight: 600; letter-spacing: .02em;
+      color: white; background: var(--btn-bg);
+      box-shadow: 0 12px 30px color-mix(in oklab, var(--accent) 32%, black 72%), var(--ring);
+      transition: filter .2s ease, box-shadow .2s ease;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .6rem;
+    }
+
+    /* Replace bouncy hover with a subtle sheen sweep */
+    .btn::before {
+      content: ""; position: absolute; inset: 0; transform: translateX(-120%);
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.12) 20%, rgba(255,255,255,.24) 35%, transparent 60%);
+      pointer-events: none;
+    }
+    .btn:hover::before { animation: sheen 900ms cubic-bezier(.2,.8,.2,1); }
+    @keyframes sheen { to { transform: translateX(120%); } }
+    .btn:hover { filter: brightness(1.05); box-shadow: 0 16px 40px color-mix(in oklab, var(--accent) 36%, black 70%), var(--ring); }
+
+    /* Footer microcopy */
+    .micro { margin-top: 1.35rem; font-size: .9rem; color: var(--muted); text-align: center; }
+    .micro a { color: inherit; opacity: .9; text-underline-offset: .18em; }
+    .micro a:hover { opacity: 1; }
+
+    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      a#enter, a#enter::after { transition: none; }
+      .btn::before, .btn:hover::before, .btn, .card { animation: none !important; transition: none !important; }
+    }
+
+    /* Responsive niceties */
+    @media (max-width: 420px) {
+      .actions { gap: .6rem; }
+      .btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 <body>
-  <!-- Only one thing to do: click STRESS -->
-  <a id="enter" href="/qa/" aria-label="Enter site">STRESS</a>
-  <div class="hint" aria-hidden="true">Press Enter to continue</div>
+  <div class="container" role="main">
+    <div class="grain" aria-hidden="true"></div>
 
-  <noscript>
-    <div style="position:fixed; bottom:8px; left:50%; transform:translateX(-50%); font:600 14px/1.2 Barlow, system-ui;">
-      JavaScript disabled — <a href="/qa/" style="color:inherit; text-decoration:underline">click here to enter</a>
-    </div>
-  </noscript>
+    <section class="card" aria-label="Intro">
+      <div class="brand" aria-label="Brand">
+        <span class="name">STWESS</span>
+        <span class="dot" aria-hidden="true"></span>
+      </div>
+
+      <p class="tagline">Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.</p>
+
+      <div class="actions">
+        <!-- Destination set to /qa.html per request -->
+        <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
+      </div>
+
+      <p class="micro">HTTPS auto-enabled via GitHub Pages once DNS is ready.</p>
+    </section>
+  </div>
 
   <script>
-    // Minimal behavior: clicking the wordmark or pressing Enter navigates to the main site
-    const enter = document.getElementById('enter');
-    const DEST = enter.getAttribute('href');
+    // Minimal script: click to fade + navigate; no auto-skip
+    (() => {
+      const enter = document.getElementById('enterBtn');
+      if (!enter) return console.error('Splash: #enterBtn not found.');
 
-    function go() {
-      // Mark so you can optionally skip splash for returning visitors
-      localStorage.setItem('skipSplash', '1');
-      document.body.style.transition = 'opacity .2s ease';
-      document.body.style.opacity = '0';
-      setTimeout(() => window.location.assign(DEST), 140);
-    }
+      const DEST = enter.getAttribute('href') || '/';
 
-    enter.addEventListener('click', (e) => { e.preventDefault(); go(); });
-    window.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+      function go() {
+        document.body.style.transition = 'opacity .22s ease';
+        document.body.style.opacity = '0';
+        const DEV = new URLSearchParams(location.search).has('devtest');
+        if (!DEV) setTimeout(() => window.location.assign(DEST), 160);
+      }
 
-    // Optional: auto-bypass on return visitors (toggle true if desired)
-    const autoSkipForReturning = false; // set to true to skip automatically after first visit
-    if (autoSkipForReturning && localStorage.getItem('skipSplash') === '1') {
-      setTimeout(go, 200);
-    }
+      enter.addEventListener('click', (e) => {
+        e.preventDefault();
+        go();
+      });
+
+      // Dev self-tests (visit with ?devtest=1)
+      const DEV = new URLSearchParams(location.search).has('devtest');
+      if (DEV) {
+        const count = document.querySelectorAll('#enterBtn').length;
+        console.assert(count === 1, `Expected 1 #enterBtn, found ${count}`);
+        const beforeOpacity = getComputedStyle(document.body).opacity;
+        enter.click();
+        setTimeout(() => {
+          const afterOpacity = getComputedStyle(document.body).opacity;
+          console.assert(afterOpacity !== beforeOpacity, 'Expected body opacity to change after click');
+          console.log('[splash devtest] Tests passed');
+        }, 40);
+      }
+    })();
   </script>
 </body>
 </html>
