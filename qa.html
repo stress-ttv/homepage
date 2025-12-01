@@ -40,13 +40,13 @@
 
     nav.nav {
       position: fixed;
-      top: 28px; /* more breathing room on desktop */
+      top: 40px; /* more space from browser top */
       left: 50%;
       transform: translateX(-50%);
       background-color: rgba(61, 55, 90, 0.3);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding: 8px 16px;
+      padding: 12px 26px; /* chunkier pill padding */
       border-radius: 999px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       z-index: 999;
@@ -54,13 +54,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 18px;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 26px;
     }
 
     .nav-links a {
@@ -130,7 +130,8 @@
       padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
       width: 100%;
-      margin: clamp(110px, 20vh, 130px) auto 60px auto;
+      /* nav top (40) + nav height (~40) + same-ish gap (~40) → ~120 */
+      margin: 132px auto 60px auto;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
@@ -179,7 +180,6 @@
       transform: scale(1.1);
     }
 
-    /* Ignore glow underline box on icon (we just want scale + glow text effect if any) */
     .twitch-link::after {
       display: none !important;
     }
@@ -239,13 +239,12 @@
       }
 
       nav.nav {
-        top: 20px; /* slightly lower but still roomy on mobile */
-        padding: 8px 12px;
+        top: 24px; /* still a bit of space on mobile */
+        padding: 10px 18px;
         gap: 8px;
         justify-content: space-between;
       }
 
-      /* Show toggle, hide links by default on mobile */
       .nav-toggle {
         display: inline-flex;
       }
@@ -274,13 +273,12 @@
       }
 
       .card {
-        margin-top: 112px;
+        margin-top: 118px;
         margin-bottom: 48px;
       }
     }
 
     @media (min-width: 521px) {
-      /* Desktop: always show links inline, hide toggle */
       .nav-toggle {
         display: none;
       }
@@ -329,6 +327,7 @@
       <a id="top"></a>
       <h1>Know Thy Streamer</h1>
 
+      <!-- Q&A content unchanged -->
       <div class="qa-pair">
         <p>What’s the dumbest way you’ve ever injured yourself?</p>
         <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
