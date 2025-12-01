@@ -40,7 +40,7 @@
 
     nav.nav {
       position: fixed;
-      top: 20px;
+      top: 28px; /* more breathing room on desktop */
       left: 50%;
       transform: translateX(-50%);
       background-color: rgba(61, 55, 90, 0.3);
@@ -71,23 +71,16 @@
       font-size: 0.98rem;
     }
 
-    .nav-links a::after {
+    /* Active link underline (keep for orientation) */
+    .nav-links a.active::after {
       content: "";
       position: absolute;
       bottom: -4px;
       left: 0;
-      width: 0;
+      width: 100%;
       height: 2px;
+      border-radius: 999px;
       background-color: #bbaaf0;
-      transition: width 0.3s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-links a.active::after {
-      width: 100%;
     }
 
     /* Toggle button (hamburger) */
@@ -111,35 +104,21 @@
       line-height: 1;
     }
 
-    /* LINKS INSIDE CONTENT
+    /* LINKS INSIDE CONTENT – global glow hover
        ------------------------------------------------------------------ */
 
     a {
       color: #bbaaf0;
       text-decoration: none;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
     }
 
-    .qa-pair a,
-    footer a {
-      font-weight: bold;
-      position: relative;
-    }
-
-    .qa-pair a::after,
-    footer a::after {
-      content: "";
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: #bbaaf0;
-      transition: width 0.3s ease;
-    }
-
-    .qa-pair a:hover::after,
-    footer a:hover::after {
-      width: 100%;
+    a:hover,
+    a:focus-visible {
+      color: #e3ddff;
+      text-shadow:
+        0 0 4px rgba(187, 170, 240, 0.7),
+        0 0 10px rgba(139, 92, 246, 0.65);
     }
 
     /* MAIN CARD
@@ -151,7 +130,7 @@
       padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
       width: 100%;
-      margin: clamp(96px, 18vh, 120px) auto 60px auto;
+      margin: clamp(110px, 20vh, 130px) auto 60px auto;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
@@ -200,6 +179,7 @@
       transform: scale(1.1);
     }
 
+    /* Ignore glow underline box on icon (we just want scale + glow text effect if any) */
     .twitch-link::after {
       display: none !important;
     }
@@ -250,49 +230,6 @@
       background-color: #b7aff2;
     }
 
-    /* HOME BUTTON
-       ------------------------------------------------------------------ */
-
-    .home-button {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background-color: rgba(61, 55, 90, 0.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-      color: #bbaaf0;
-      text-decoration: none;
-      z-index: 1001;
-      transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .home-button:hover {
-      transform: scale(1.06);
-      background-color: rgba(61, 55, 90, 0.5);
-    }
-
-    .home-button:active {
-      transform: scale(0.98);
-    }
-
-    .home-button::after {
-      display: none !important;
-    }
-
-    .home-button svg {
-      width: 22px;
-      height: 22px;
-      display: block;
-    }
-
     /* RESPONSIVE NAV BEHAVIOR
        ------------------------------------------------------------------ */
 
@@ -302,7 +239,7 @@
       }
 
       nav.nav {
-        top: 14px;
+        top: 20px; /* slightly lower but still roomy on mobile */
         padding: 8px 12px;
         gap: 8px;
         justify-content: space-between;
@@ -336,15 +273,8 @@
         display: flex;
       }
 
-      .home-button {
-        top: 14px;
-        left: 14px;
-        width: 40px;
-        height: 40px;
-      }
-
       .card {
-        margin-top: 104px;
+        margin-top: 112px;
         margin-bottom: 48px;
       }
     }
@@ -380,23 +310,6 @@
   </style>
 </head>
 <body>
-  <!-- Home icon button back to splash (root).
-       If your splash is not at '/', change href to the correct path (e.g., '/index.html' or '/splash.html'). -->
-  <a class="home-button" href="/" aria-label="Back to home">
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M3 11l9-7 9 7" />
-      <path d="M9 22V12h6v10" />
-    </svg>
-  </a>
-
   <nav class="nav" aria-label="Main navigation">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
       <span class="nav-toggle-icon">☰</span>
