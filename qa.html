@@ -4,18 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Q&A</title>
-  <link rel="icon" href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Barlow+Condensed:ital,wght@1,500&display=swap" rel="stylesheet" />
+
+  <link
+    rel="icon"
+    href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Barlow+Condensed:ital,wght@1,500&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Barlow', sans-serif;
-      background-color: #302c45;
       margin: 0;
-      padding: 0;
+      padding: 0 16px 40px;
+      min-height: 100vh;
+      font-family: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: #302c45;
       color: #ffffff;
     }
 
+    /* Centered, floating nav */
     nav {
       position: fixed;
       top: 20px;
@@ -30,6 +43,9 @@
       z-index: 999;
       display: flex;
       gap: 24px;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
     }
 
     nav a {
@@ -37,10 +53,11 @@
       font-weight: bold;
       text-decoration: none;
       position: relative;
+      font-size: 0.98rem;
     }
 
     nav a::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -4px;
       left: 0;
@@ -50,18 +67,29 @@
       transition: width 0.3s ease;
     }
 
-    nav a:hover::after { width: 100%; }
-    nav a.active::after { width: 100%; }
+    nav a:hover::after {
+      width: 100%;
+    }
 
+    nav a.active::after {
+      width: 100%;
+    }
+
+    /* Generic links (inside content) */
     a {
       color: #bbaaf0;
-      font-weight: bold;
       text-decoration: none;
+    }
+
+    .qa-pair a,
+    footer a {
+      font-weight: bold;
       position: relative;
     }
 
-    a::after {
-      content: '';
+    .qa-pair a::after,
+    footer a::after {
+      content: "";
       position: absolute;
       bottom: -4px;
       left: 0;
@@ -71,24 +99,29 @@
       transition: width 0.3s ease;
     }
 
-    a:hover::after { width: 100%; }
+    .qa-pair a:hover::after,
+    footer a:hover::after {
+      width: 100%;
+    }
 
+    /* Main card */
     .card {
       background-color: #3d375a;
       border-radius: 12px;
-      padding: 32px 24px;
+      padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
-      margin: 100px auto 60px auto;
+      width: 100%;
+      margin: clamp(96px, 18vh, 120px) auto 60px auto;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: "Barlow Condensed", sans-serif;
       font-size: 42px;
       font-style: italic;
       text-transform: uppercase;
       text-align: left;
-      margin-bottom: 40px;
+      margin: 0 0 40px;
       line-height: 1.1;
     }
 
@@ -96,13 +129,16 @@
       margin-bottom: 32px;
     }
 
+    .qa-pair p {
+      margin: 0;
+    }
+
     .qa-pair p:first-child {
-      font-weight: bold;
+      font-weight: 700;
       margin-bottom: 6px;
     }
 
     .qa-pair p:last-child {
-      margin: 0;
       line-height: 1.5;
     }
 
@@ -121,6 +157,7 @@
       transform: scale(1.1);
     }
 
+    /* Remove underline animation from the Twitch icon itself */
     .twitch-link::after {
       display: none !important;
     }
@@ -138,6 +175,7 @@
       font-style: italic;
     }
 
+    /* Back-to-top button */
     .back-to-top-button {
       position: fixed;
       bottom: 24px;
@@ -152,7 +190,7 @@
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transition: opacity 0.3s ease, transform 0.2s ease;
+      transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
       opacity: 0;
       pointer-events: none;
       z-index: 100;
@@ -169,212 +207,180 @@
     }
 
     /* Home (back to splash) circular icon button */
-.home-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  background-color: rgba(61, 55, 90, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
-  color: #bbaaf0;
-  text-decoration: none;
-  z-index: 1001; /* above nav */
-  transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
-}
+    .home-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background-color: rgba(61, 55, 90, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      color: #bbaaf0;
+      text-decoration: none;
+      z-index: 1001; /* above nav */
+      transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-/* Slight hover/active without underline */
-.home-button:hover { transform: scale(1.06); background-color: rgba(61,55,90,0.5); }
-.home-button:active { transform: scale(0.98); }
+    .home-button:hover {
+      transform: scale(1.06);
+      background-color: rgba(61, 55, 90, 0.5);
+    }
 
-/* Remove the page-wide link underline effect for this icon */
-.home-button::after { display: none !important; }
+    .home-button:active {
+      transform: scale(0.98);
+    }
 
-/* Icon sizing */
-.home-button svg { width: 22px; height: 22px; display: block; }
+    /* Remove link underline animation for the icon */
+    .home-button::after {
+      display: none !important;
+    }
 
-/* Mobile tweaks so Home button doesn’t collide with centered nav */
-@media (max-width: 520px) {
-  .home-button { top: 14px; left: 14px; width: 40px; height: 40px; }
-  /* Optional: if you have the centered nav from qa.html */
-  nav { top: 14px; padding: 10px 16px; gap: 16px; }
-}
+    .home-button svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
 
+    /* Mobile tweaks */
+    @media (max-width: 520px) {
+      body {
+        padding: 0 12px 32px;
+      }
+
+      nav {
+        top: 14px;
+        padding: 10px 16px;
+        gap: 16px;
+      }
+
+      .home-button {
+        top: 14px;
+        left: 14px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .card {
+        margin-top: 96px;
+        margin-bottom: 48px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      nav {
+        gap: 12px;
+        padding-inline: 12px;
+        font-size: 0.9rem;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+    }
   </style>
 </head>
 <body>
-<!-- Home icon button back to splash (root). 
-     If your splash is not at '/', change href to the correct path (e.g., '/index.html' or '/splash.html'). -->
-<a class="home-button" href="/" aria-label="Back to home">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M3 11l9-7 9 7"/>
-    <path d="M9 22V12h6v10"/>
-  </svg>
-</a>
-
-<nav>
-  <a href="qa.html" class="active">Q&A</a>
-  <a href="rules.html">Rules</a>
-  <a href="credits.html">Credits</a>
-  <a href="commands.html">Commands</a>
-</nav>
-
-<div class="card">
-  <a id="top"></a>
-  <h1>Know Thy Streamer</h1>
-
-    <div class="qa-pair">
-    <p>What’s the dumbest way you’ve ever injured yourself?</p>
-    <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
-  </div>
-
-     <div class="qa-pair">
-    <p>What food would you eat every day if your body wouldn’t betray you?</p>
-    <p>Carbs. If bread is wrong, I don't want to be right.</p>
-  </div>
-
-     <div class="qa-pair">
-    <p>What are things that instantly make you rage (but only a little)?</p>
-    <p>Wet socks, people who litter, and being perceived in public.</p>
-  </div>
-
-     <div class="qa-pair">
-    <p>What’s your toxic trait in co-op games?</p>
-    <p>Trolling. I can't control myself.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What’s your comfort game and what does it say about you?</p>
-    <p>Competitive shooters. I enjoy being humbled by 12-year-olds.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>Which video game character would you simp for?</p>
-    <p><a href="https://i.redd.it/srqr67wlaxp81.jpg" target="_blank" rel="noopener noreferrer">Wattson</a> from Apex. Kawaii desu.</p>
-  </div>
-
-        <div class="qa-pair">
-    <p>What’s something you irrationally hated as a kid?</p>
-    <p>Glitter. It’s the herpes of the craft world.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What would be your weapon of choice in a zombie apocalypse?</p>
-    <p>Machete. Ain't nobody got time to reload.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What song would you absolutely crush in karaoke (or think you would)?</p>
-    <p><a href="https://www.youtube.com/watch?v=U_JFLb1IItM&list=RDU_JFLb1IItM&start_radio=1" target="_blank" rel="noopener noreferrer">Tequila</a> by The Champs. Iconic. Catchy. One word.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What’s a useless skill you’re secretly proud of?</p>
-    <p>Spinning my tennis racket like I’m summoning wind magic.</p>
-  </div>
-
-      <div class="qa-pair">
-    <p>What’s your most irrational fear?</p>
-    <p>Being late and missing the school bus. I’m in my 30s btw.</p>
-  </div>
-
-        <div class="qa-pair">
-    <p>If you had to be haunted by a ghost, who would you want it to be?</p>
-    <p><a href="https://cdn.mos.cms.futurecdn.net/5yUsfce2ijMrvQMRQSSDeR-1200-80.jpg" target="_blank" rel="noopener noreferrer">Casper</a>. He listens.</p>
-  </div>
-
-        <div class="qa-pair">
-    <p>Which game do you pretend to like because everyone else does?</p>
-    <p>Pokémon. I like it, but not 900+ creatures worth of like.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What fictional food do you wish you could eat in real life?</p>
-    <p><a href="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/07/1000995840.jpg?q=70&fit=contain&w=1200&h=628&dpr=1" target="_blank" rel="noopener noreferrer">Senzu beans</a> because I'm oldge.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What’s a game you wish you could experience again for the first time?</p>
-    <p>Apex Legends. First time was magical. Now it’s emotional damage.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>Which “reliable” tech items always betray you?</p>
-    <p>My PC and mic. They’re in a toxic relationship and I’m just in the middle.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What’s the weirdest thing you believed as a kid?</p>
-    <p>I thought that if you had two energy drinks in a row, your heart would explode.</p>
-  </div>
-
-          <div class="qa-pair">
-    <p>What’s something you do that makes you feel like you have your life together?</p>
-    <p>Making my bed. It’s the illusion of control I need to help me get through the day.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What’s something completely normal that gives you the ick?</p>
-    <p>Yogurt. It’s basically tangy, bacteria-curdled milk goo.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What’s something small that irrationally stresses you out?</p>
-    <p>Dust. I'd make my left hand a permanent feather duster if I could.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>How long is “five more minutes” when you’re in bed?</p>
-    <p>One entire feature film.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>If you could tell your past self one piece of advice, what would it be?</p>
-    <p>For the love of God, take care of your mental health. Therapy and meds are expensive.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What’s your “this shouldn’t be a personality trait, but it is” thing?</p>
-    <p>Wanting everything to be clean, neat, and dust-free. My standards are fighting my energy levels daily.</p>
-  </div>
-
-            <div class="qa-pair">
-    <p>What is something you’re very competitive about that does not matter at all?</p>
-    <p>Tennis. Hitting green, fuzzy balls is serious business to me.</p>
-  </div>
-
-              <div class="qa-pair">
-    <p>What do you daydream about the most?</p>
-    <p>You. ❤️❤️❤️</p>
-  </div>
-
-</div>
-
-<footer>
-  <a href="https://twitch.tv/stress" target="_blank" class="twitch-link">
-    <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
+  <!-- Home icon button back to splash (root).
+       If your splash is not at '/', change href to the correct path (e.g., '/index.html' or '/splash.html'). -->
+  <a class="home-button" href="/" aria-label="Back to home">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 11l9-7 9 7" />
+      <path d="M9 22V12h6v10" />
+    </svg>
   </a>
-  <div class="caption">Watch me suffer live.</div>
-</footer>
 
-<button class="back-to-top-button" id="backToTop">↑</button>
+  <nav>
+    <a href="qa.html" class="active">Q&A</a>
+    <a href="rules.html">Rules</a>
+    <a href="credits.html">Credits</a>
+    <a href="commands.html">Commands</a>
+  </nav>
 
-<script>
-  const backToTopBtn = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
-    backToTopBtn.classList.toggle('show', scrollPosition > 150);
-  });
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-</script>
+  <main>
+    <div class="card">
+      <a id="top"></a>
+      <h1>Know Thy Streamer</h1>
 
-</body>
-</html>
+      <div class="qa-pair">
+        <p>What’s the dumbest way you’ve ever injured yourself?</p>
+        <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What food would you eat every day if your body wouldn’t betray you?</p>
+        <p>Carbs. If bread is wrong, I don't want to be right.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What are things that instantly make you rage (but only a little)?</p>
+        <p>Wet socks, people who litter, and being perceived in public.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What’s your toxic trait in co-op games?</p>
+        <p>Trolling. I can't control myself.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What’s your comfort game and what does it say about you?</p>
+        <p>Competitive shooters. I enjoy being humbled by 12-year-olds.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>Which video game character would you simp for?</p>
+        <p><a href="https://i.redd.it/srqr67wlaxp81.jpg" target="_blank" rel="noopener noreferrer">Wattson</a> from Apex. Kawaii desu.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What’s something you irrationally hated as a kid?</p>
+        <p>Glitter. It’s the herpes of the craft world.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What would be your weapon of choice in a zombie apocalypse?</p>
+        <p>Machete. Ain't nobody got time to reload.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What song would you absolutely crush in karaoke (or think you would)?</p>
+        <p><a href="https://www.youtube.com/watch?v=U_JFLb1IItM&list=RDU_JFLb1IItM&start_radio=1" target="_blank" rel="noopener noreferrer">Tequila</a> by The Champs. Iconic. Catchy. One word.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What’s a useless skill you’re secretly proud of?</p>
+        <p>Spinning my tennis racket like I’m summoning wind magic.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What’s your most irrational fear?</p>
+        <p>Being late and missing the school bus. I’m in my 30s btw.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>If you had to be haunted by a ghost, who would you want it to be?</p>
+        <p><a href="https://cdn.mos.cms.futurecdn.net/5yUsfce2ijMrvQMRQSSDeR-1200-80.jpg" target="_blank" rel="noopener noreferrer">Casper</a>. He listens.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>Which game do you pretend to like because everyone else does?</p>
+        <p>Pokémon. I like it, but not 900+ creatures worth of like.</p>
+      </div>
+
+      <div class="qa-pair">
+        <p>What fictional food do you wish you could eat in real life?</p>
+        <p><a href="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/07/1000995840.jpg?q=70&fit=contain&w=1200&h=628&dpr=1" target="
