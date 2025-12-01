@@ -4,91 +4,143 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rules</title>
-  <link rel="icon" href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Barlow+Condensed:ital,wght@1,500&display=swap" rel="stylesheet" />
+
+  <link
+    rel="icon"
+    href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Barlow+Condensed:ital,wght@1,500&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Barlow', sans-serif;
-      background-color: #302c45;
-      margin: 0;
-      padding: 0;
-      color: #ffffff;
+    /* Layout sanity */
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
 
-    nav {
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      padding: 0 16px 40px;
+      min-height: 100vh;
+      font-family: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: #302c45;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* NAV
+       ------------------------------------------------------------------ */
+
+    nav.nav {
       position: fixed;
-      top: 20px;
+      top: 40px; /* same spacing as Q&A */
       left: 50%;
       transform: translateX(-50%);
       background-color: rgba(61, 55, 90, 0.3);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding: 12px 24px;
-      border-radius: 12px;
+      padding: 12px 26px; /* chunkier pill padding */
+      border-radius: 999px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       z-index: 999;
+      max-width: calc(100% - 24px);
       display: flex;
-      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
     }
 
-    nav a {
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav-links a {
       color: #bbaaf0;
       font-weight: bold;
       text-decoration: none;
       position: relative;
+      font-size: 0.98rem;
     }
 
-    nav a::after {
-      content: '';
+    /* Active link underline for orientation */
+    .nav-links a.active::after {
+      content: "";
       position: absolute;
       bottom: -4px;
       left: 0;
-      width: 0;
+      width: 100%;
       height: 2px;
+      border-radius: 999px;
       background-color: #bbaaf0;
-      transition: width 0.3s ease;
     }
 
-    nav a:hover::after { width: 100%; }
-    nav a.active::after { width: 100%; }
+    /* Toggle button (hamburger) */
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: rgba(61, 55, 90, 0.8);
+      color: #bbaaf0;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .nav-toggle-icon {
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    /* GLOBAL LINK STYLING – glow hover
+       ------------------------------------------------------------------ */
 
     a {
       color: #bbaaf0;
-      font-weight: bold;
       text-decoration: none;
-      position: relative;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
     }
 
-    a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: #bbaaf0;
-      transition: width 0.3s ease;
+    a:hover,
+    a:focus-visible {
+      color: #e3ddff;
+      text-shadow:
+        0 0 4px rgba(187, 170, 240, 0.7),
+        0 0 10px rgba(139, 92, 246, 0.65);
     }
 
-    a:hover::after { width: 100%; }
+    /* MAIN CARD
+       ------------------------------------------------------------------ */
 
     .card {
       background-color: #3d375a;
       border-radius: 12px;
-      padding: 32px 24px;
+      padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
-      margin: 100px auto 60px auto;
+      width: 100%;
+      margin: 132px auto 60px auto; /* matches Q&A spacing */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: "Barlow Condensed", sans-serif;
       font-size: 42px;
       font-style: italic;
       text-transform: uppercase;
       text-align: left;
-      margin-bottom: 40px;
+      margin: 0 0 40px;
       line-height: 1.1;
     }
 
@@ -96,15 +148,21 @@
       margin-bottom: 32px;
     }
 
+    .qa-pair p {
+      margin: 0;
+    }
+
     .qa-pair p:first-child {
-      font-weight: bold;
+      font-weight: 700;
       margin-bottom: 6px;
     }
 
     .qa-pair p:last-child {
-      margin: 0;
       line-height: 1.5;
     }
+
+    /* FOOTER
+       ------------------------------------------------------------------ */
 
     footer {
       text-align: center;
@@ -138,6 +196,9 @@
       font-style: italic;
     }
 
+    /* BACK TO TOP BUTTON
+       ------------------------------------------------------------------ */
+
     .back-to-top-button {
       position: fixed;
       bottom: 24px;
@@ -152,7 +213,7 @@
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transition: opacity 0.3s ease, transform 0.2s ease;
+      transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
       opacity: 0;
       pointer-events: none;
       z-index: 100;
@@ -168,140 +229,188 @@
       background-color: #b7aff2;
     }
 
-    /* Home (back to splash) circular icon button */
-.home-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  background-color: rgba(61, 55, 90, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
-  color: #bbaaf0;
-  text-decoration: none;
-  z-index: 1001; /* above nav */
-  transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
-}
+    /* RESPONSIVE NAV BEHAVIOR
+       ------------------------------------------------------------------ */
 
-/* Slight hover/active without underline */
-.home-button:hover { transform: scale(1.06); background-color: rgba(61,55,90,0.5); }
-.home-button:active { transform: scale(0.98); }
+    @media (max-width: 520px) {
+      body {
+        padding: 0 12px 32px;
+      }
 
-/* Remove the page-wide link underline effect for this icon */
-.home-button::after { display: none !important; }
+      nav.nav {
+        top: 24px;
+        padding: 10px 18px;
+        gap: 8px;
+        justify-content: space-between;
+      }
 
-/* Icon sizing */
-.home-button svg { width: 22px; height: 22px; display: block; }
+      .nav-toggle {
+        display: inline-flex;
+      }
 
-/* Mobile tweaks so Home button doesn’t collide with centered nav */
-@media (max-width: 520px) {
-  .home-button { top: 14px; left: 14px; width: 40px; height: 40px; }
-  /* Optional: if you have the centered nav from qa.html */
-  nav { top: 14px; padding: 10px 16px; gap: 16px; }
-}
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background-color: rgba(61, 55, 90, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        min-width: 180px;
+      }
 
+      .nav.open .nav-links {
+        display: flex;
+      }
+
+      .card {
+        margin-top: 118px;
+        margin-bottom: 48px;
+      }
+    }
+
+    @media (min-width: 521px) {
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex !important;
+        position: static;
+        transform: none;
+        margin-top: 0;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 360px) {
+      nav.nav {
+        max-width: calc(100% - 20px);
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+    }
   </style>
 </head>
 <body>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="nav-toggle-icon">☰</span>
+      <span>Menu</span>
+    </button>
 
-<!-- Home icon button back to splash (root). 
-     If your splash is not at '/', change href to the correct path (e.g., '/index.html' or '/splash.html'). -->
-<a class="home-button" href="/" aria-label="Back to home">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M3 11l9-7 9 7"/>
-    <path d="M9 22V12h6v10"/>
-  </svg>
-</a>
+    <div class="nav-links">
+      <a href="qa.html">Q&A</a>
+      <a href="rules.html" class="active">Rules</a>
+      <a href="credits.html">Credits</a>
+      <a href="commands.html">Commands</a>
+    </div>
+  </nav>
 
-  
-<nav>
-  <a href="qa.html">Q&A</a>
-  <a href="rules.html" class="active">Rules</a>
-  <a href="credits.html">Credits</a>
-  <a href="commands.html">Commands</a>
-</nav>
+  <main>
+    <div class="card">
+      <a id="top"></a>
+      <h1>Thou Shalt Chill</h1>
 
-<div class="card">
-  <a id="top"></a>
-  <h1>Thou Shalt Chill</h1>
+      <div class="qa-pair">
+        <p>Be kind to others in chat.</p>
+        <p>This isn’t the Thunderdome. Behave yourself.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>Be kind to others in chat.</p>
-    <p>This isn’t the Thunderdome. Behave yourself.</p>
-  </div>
+      <div class="qa-pair">
+        <p>No racism, sexism, homophobia, or hate speech.</p>
+        <p>You will be banned so fast, there'll be a sonic boom.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>No racism, sexism, homophobia, or hate speech.</p>
-    <p>You will be banned so fast, there'll be a sonic boom.</p>
-  </div>
+      <div class="qa-pair">
+        <p>No self-promo.</p>
+        <p>Unless you're paying my ass, keep it to yourself.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>No self-promo.</p>
-    <p>Unless you're paying my ass, keep it to yourself.</p>
-  </div>
+      <div class="qa-pair">
+        <p>Respect the mods.</p>
+        <p>They wield the mighty ban hammer. Don't test them, they've been through enough.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>Respect the mods.</p>
-    <p>They wield the mighty ban hammer. Don't test them, they've been through enough.</p>
-  </div>
+      <div class="qa-pair">
+        <p>Don't backseat game unless I ask for help.</p>
+        <p>I know I'm bad. You know I'm bad. Let me spiral in peace.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>Don't backseat game unless I ask for help.</p>
-    <p>I know I'm bad. You know I'm bad. Let me spiral in peace.</p>
-  </div>
+      <div class="qa-pair">
+        <p>Bury your trauma deep, deep into your subconscious.</p>
+        <p>We cry here, but only from getting clapped and the occasional bad RNG.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>Bury your trauma deep, deep into your subconscious.</p>
-    <p>We cry here, but only from getting clapped and the occasional bad RNG.</p>
-  </div>
+      <div class="qa-pair">
+        <p>Have fun and vibe.</p>
+        <p>If you’re not having fun, you’re legally required to fake it.</p>
+      </div>
 
-  <div class="qa-pair">
-    <p>Have fun and vibe.</p>
-    <p>If you’re not having fun, you’re legally required to fake it.</p>
-  </div>
+      <div class="qa-pair">
+        <p>No spoilers or leaks.</p>
+        <p>I'm playing the game to suffer in real time. Don't rob me of that pain.</p>
+      </div>
 
-<div class="qa-pair">
-  <p>No spoilers or leaks.</p>
-  <p>I'm playing the game to suffer in real time. Don't rob me of that pain.</p>
-</div>
+      <div class="qa-pair">
+        <p>No politics or religion.</p>
+        <p>This isn't a family Thanksgiving dinner.</p>
+      </div>
 
-<div class="qa-pair">
-  <p>No politics or religion.</p>
-  <p>This isn't a family Thanksgiving dinner.</p>
-</div>
+      <div class="qa-pair">
+        <p>Don't worry about subs, tips, Hype Trains, etc.</p>
+        <p>If your wallet says no, I do too. You're still cool.</p>
+      </div>
+    </div>
 
-<div class="qa-pair">
-  <p>Don't worry about subs, tips, Hype Trains, etc.</p>
-  <p>If your wallet says no, I do too. You're still cool.</p>
-</div>
+    <footer>
+      <a href="https://twitch.tv/stress" target="_blank" class="twitch-link" rel="noopener noreferrer">
+        <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
+      </a>
+      <div class="caption">Watch me suffer live.</div>
+    </footer>
+  </main>
 
-</div>
+  <button class="back-to-top-button" id="backToTop">↑</button>
 
-<footer>
-  <a href="https://twitch.tv/stress" target="_blank" class="twitch-link">
-    <img src="https://i.imgur.com/Urw30ly.png" alt="Twitch" class="twitch-icon" />
-  </a>
-  <div class="caption">Watch me suffer live.</div>
-</footer>
+  <script>
+    // Back-to-top behavior
+    const backToTopBtn = document.getElementById("backToTop");
 
-<button class="back-to-top-button" id="backToTop">↑</button>
+    window.addEventListener("scroll", () => {
+      const scrollPosition =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      backToTopBtn.classList.toggle("show", scrollPosition > 150);
+    });
 
-<script>
-  const backToTopBtn = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
-    backToTopBtn.classList.toggle('show', scrollPosition > 150);
-  });
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-</script>
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
+    // Mobile nav toggle
+    const nav = document.querySelector("nav.nav");
+    const navToggle = document.querySelector(".nav-toggle");
+
+    if (nav && navToggle) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = nav.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
+  </script>
 </body>
 </html>
