@@ -1,225 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Your Site – Intro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="Intro page with random facts before entering the main site."
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Stress</title>
+
+  <meta name="description" content="Welcome — click to enter" />
+  <meta property="og:title" content="Stress" />
+  <meta property="og:description" content="Welcome — click to enter" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stwess.co/" />
+
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="160x160"
+    href="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj"
   />
 
+  <!-- Fonts: Oswald + Barlow (same as before) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Barlow:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet"
+  >
+
   <style>
-    /* Basic reset */
+    :root {
+      --bg: #302C45;      /* solid background */
+      --panel: #3D375A;   /* card background */
+      --fg: #EDEAF7;      /* primary text */
+      --muted: #B9B3D2;   /* secondary text */
+      --accent: #8B5CF6;  /* violet accent */
+      --maxw: 720px;
+      --radius: 28px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
     *, *::before, *::after {
       box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      color: var(--fg);
+      background: var(--bg);
+      font-family: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--maxw);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* Main card */
-    .wrapper {
-      width: 100%;
-      max-width: 480px;
-      padding: 1.75rem;
-    }
-
     .card {
-      background: #020617;
-      border-radius: 1.25rem;
-      padding: 2rem 1.75rem;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-      border: 1px solid #1f2937;
+      width: 100%;
+      padding: clamp(20px, 5vw, 48px);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      text-align: center;
     }
 
-    .title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 0 0 0.25rem;
-    }
-
-    .subtitle {
-      font-size: 0.95rem;
-      color: #9ca3af;
-      margin: 0 0 1.5rem;
-    }
-
-    .label {
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
+    .brand {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(0.6rem, 2.5vw, 1rem);
+      flex-wrap: wrap;
+      font-family: "Oswald", system-ui, sans-serif;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
-      color: #6b7280;
-      margin-bottom: 0.35rem;
     }
 
-    .fact-box {
-      background: #020617;
-      border-radius: 0.9rem;
-      border: 1px solid #1f2937;
-      padding: 1rem 1rem 1.1rem;
-      margin-bottom: 1rem;
+    .brand .avatar {
+      width: clamp(60px, 18vw, 112px);
+      height: clamp(60px, 18vw, 112px);
+      border-radius: 9999px;
+      object-fit: cover;
+      object-position: center;
+      display: inline-block;
+      box-shadow:
+        0 0 0 3px rgba(255,255,255,0.06),
+        0 6px 20px rgba(0,0,0,.35);
+      flex: 0 0 auto;
     }
 
-    .fact-text {
-      font-size: 0.98rem;
-      line-height: 1.5;
-      color: #e5e7eb;
+    .brand .name {
+      font-size: clamp(32px, 12vw, 84px);
+      font-weight: 600;
+      line-height: 1;
+      word-break: break-word;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: clamp(15px, 3.8vw, 20px);
+      margin: 0;
+    }
+
+    .brand + .tagline {
+      margin-top: clamp(14px, 3.8vw, 28px);
+    }
+
+    .tagline + .actions {
+      margin-top: clamp(16px, 4.2vw, 28px);
     }
 
     .actions {
       display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: clamp(0.5rem, 2.8vw, 0.8rem);
       flex-wrap: wrap;
-      gap: 0.75rem;
-      margin: 1.25rem 0 0.25rem;
     }
 
-    button,
-    a.btn {
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      user-select: none;
+      padding: clamp(0.8rem, 3.5vw, 1rem) clamp(1rem, 4.2vw, 1.2rem);
+      border-radius: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      background: linear-gradient(180deg, #a855f7, #7c3aed); /* simple accent gradient */
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.7rem 1.3rem;
-      border-radius: 999px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out,
-        background-color 0.15s ease-out, border-color 0.15s ease-out;
+      gap: 0.6rem;
+      min-height: 44px;
+      min-width: 44px;
+      transition:
+        background-color 0.15s ease,
+        transform 0.12s ease,
+        box-shadow 0.15s ease,
+        filter 0.15s ease;
       white-space: nowrap;
     }
 
-    .btn-primary {
-      background: #e5e7eb;
-      color: #020617;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.45);
+    .btn:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.7);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.6);
+    .btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     }
 
-    .btn-ghost {
-      background: transparent;
-      color: #e5e7eb;
-      border-color: #4b5563;
-    }
-
-    .btn-ghost:hover {
-      background: #111827;
-    }
-
-    .hint {
-      margin-top: 0.75rem;
-      font-size: 0.8rem;
-      color: #6b7280;
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 1.6rem 1.3rem;
-        border-radius: 1rem;
+    /* Very small phones */
+    @media (max-width: 360px) {
+      .brand .name {
+        font-size: clamp(28px, 11.5vw, 56px);
       }
 
-      .title {
-        font-size: 1.35rem;
+      .brand .avatar {
+        width: clamp(52px, 16vw, 96px);
+        height: clamp(52px, 16vw, 96px);
       }
 
       .actions {
         flex-direction: column;
-        align-items: stretch;
       }
 
-      button,
-      a.btn {
+      .btn {
         width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <main class="card">
-      <h1 class="title">Welcome to my little corner of the internet</h1>
-      <p class="subtitle">
-        Before you enter, enjoy a random fact about me / this site.
-      </p>
-
-      <div class="label">Random fact</div>
-      <div class="fact-box" aria-live="polite">
-        <p id="fact" class="fact-text">
-          Loading a random fact...
-        </p>
+  <div class="container" role="main">
+    <section class="card" aria-label="Intro">
+      <div class="brand" aria-label="Brand">
+        <img
+          class="avatar"
+          src="https://yt3.googleusercontent.com/pQBD1tbxoYhKuzpBcYvPiFgdhQh__6x5XLS9W80CK1-wc4BlLurwXb544tkWpvie_HPUk35r6w=s160-c-k-c0x00ffffff-no-rj"
+          alt=""
+          aria-hidden="true"
+        />
+        <span class="name">STRESS</span>
       </div>
+
+      <p class="tagline" id="tagline">
+        Welcome to the chaos-calming corner of the internet. Breathe in. Click when ready.
+      </p>
 
       <div class="actions">
-        <button type="button" class="btn-ghost" id="new-fact-btn">
-          New fact
-        </button>
-
-        <!-- TODO: change "qa.html" to the actual filename of your Q&A page -->
-        <a href="qa.html" class="btn btn-primary">
-          Enter site
-        </a>
+        <!-- Adjust the href if your Q&A file has a different path/name -->
+        <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
       </div>
-
-      <p class="hint">
-        You’ll land on a big Q&A page where I’ve answered a bunch of questions.
-      </p>
-    </main>
+    </section>
   </div>
 
   <script>
-    // Put your random facts here:
-    const facts = [
-      "I made this site mostly to answer questions people keep asking me.",
-      "Some of these facts might be serious. Some might be very, very not.",
-      "I spend an unhealthy amount of time tweaking tiny design details.",
-      "Yes, there is a Q&A page. Yes, I really did answer all of those.",
-      "You’re absolutely allowed to press the New Fact button multiple times.",
-      // Add or replace with your own facts:
-      // "I have a Twitch channel called ...",
-      // "I named my community ...",
-    ];
+    // Simple random fact on load
+    (function () {
+      var el = document.getElementById("tagline");
+      if (!el) return;
 
-    function getRandomFact(lastFact) {
-      if (facts.length === 0) return "I forgot to add facts to the list. Oops.";
-      if (facts.length === 1) return facts[0];
+      var FACTS = [
+        "Octopuses have three hearts and blue blood.",
+        "Bananas are berries, but strawberries are not.",
+        "Koalas have fingerprints so similar to humans that they can confuse crime scenes.",
+        "Wombats poop in cubes. Nature is a designer.",
+        "Sharks existed before trees.",
+        "Nintendo was founded in 1889—before plastic was a thing.",
+        "The hashtag symbol is technically called an octothorpe.",
+        "Honey found in ancient Egyptian tombs is still edible.",
+        "The first recorded “computer bug” was a real moth found in 1947.",
+        "A group of flamingos is called a flamboyance.",
+        "There’s a basketball court hidden inside the U.S. Supreme Court building—nicknamed the Highest Court in the Land.",
+        "Cows and bison can crossbreed. Their offspring are called beefalo.",
+        "The Eiffel Tower can be about 15 cm taller in summer due to heat expansion.",
+        "Rabbits can’t vomit. (Evolution said: one-way only.)",
+        "Pac-Man’s design was inspired by a pizza missing a slice (so the legend goes).",
+        "Avocados are technically giant berries.",
+        "A day on Venus is longer than its year.",
+        "Butterflies taste with their feet.",
+        "There are more possible chess games than atoms in the observable universe.",
+        "Hot water can sometimes freeze faster than cold water (the Mpemba effect)."
+      ];
 
-      let next;
-      do {
-        next = facts[Math.floor(Math.random() * facts.length)];
-      } while (next === lastFact);
-      return next;
-    }
+      function setRandomFact() {
+        if (!FACTS.length) return;
+        var index = Math.floor(Math.random() * FACTS.length);
+        el.textContent = FACTS[index];
+      }
 
-    const factEl = document.getElementById("fact");
-    const newFactBtn = document.getElementById("new-fact-btn");
-
-    let currentFact = "";
-
-    function showRandomFact() {
-      const fact = getRandomFact(currentFact);
-      currentFact = fact;
-      factEl.textContent = fact;
-    }
-
-    newFactBtn.addEventListener("click", showRandomFact);
-
-    // Show one right away on load
-    showRandomFact();
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setRandomFact, { once: true });
+      } else {
+        setRandomFact();
+      }
+    })();
   </script>
 </body>
 </html>
