@@ -15,6 +15,11 @@
   />
 
   <style>
+    /* 👇 This is the key fix so padding doesn't blow up widths */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     html {
       scroll-behavior: smooth;
       overflow-x: hidden; /* safety net */
@@ -27,7 +32,7 @@
       font-family: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background-color: #302c45;
       color: #ffffff;
-      overflow-x: hidden; /* avoid horizontal scrollbar */
+      overflow-x: hidden;
     }
 
     /* Centered, floating nav */
