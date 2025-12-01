@@ -17,6 +17,7 @@
   <style>
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden; /* safety net */
     }
 
     body {
@@ -26,6 +27,7 @@
       font-family: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background-color: #302c45;
       color: #ffffff;
+      overflow-x: hidden; /* avoid horizontal scrollbar */
     }
 
     /* Centered, floating nav */
@@ -46,6 +48,7 @@
       align-items: center;
       justify-content: center;
       white-space: nowrap;
+      max-width: calc(100% - 24px); /* keep nav inside viewport */
     }
 
     nav a {
@@ -258,6 +261,9 @@
         top: 14px;
         padding: 10px 16px;
         gap: 16px;
+        flex-wrap: wrap;       /* allow wrapping */
+        white-space: normal;   /* let links break to next line */
+        justify-content: center;
       }
 
       .home-button {
