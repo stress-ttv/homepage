@@ -15,14 +15,14 @@
   />
 
   <style>
-    /* 👇 This is the key fix so padding doesn't blow up widths */
+    /* Layout sanity */
     *, *::before, *::after {
       box-sizing: border-box;
     }
 
     html {
       scroll-behavior: smooth;
-      overflow-x: hidden; /* safety net */
+      overflow-x: hidden;
     }
 
     body {
@@ -35,8 +35,10 @@
       overflow-x: hidden;
     }
 
-    /* Centered, floating nav */
-    nav {
+    /* NAV
+       ------------------------------------------------------------------ */
+
+    nav.nav {
       position: fixed;
       top: 20px;
       left: 50%;
@@ -44,19 +46,24 @@
       background-color: rgba(61, 55, 90, 0.3);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding: 12px 24px;
-      border-radius: 12px;
+      padding: 8px 16px;
+      border-radius: 999px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       z-index: 999;
+      max-width: calc(100% - 24px);
       display: flex;
-      gap: 24px;
       align-items: center;
       justify-content: center;
-      white-space: nowrap;
-      max-width: calc(100% - 24px); /* keep nav inside viewport */
+      gap: 16px;
     }
 
-    nav a {
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
       color: #bbaaf0;
       font-weight: bold;
       text-decoration: none;
@@ -64,7 +71,7 @@
       font-size: 0.98rem;
     }
 
-    nav a::after {
+    .nav-links a::after {
       content: "";
       position: absolute;
       bottom: -4px;
@@ -75,15 +82,38 @@
       transition: width 0.3s ease;
     }
 
-    nav a:hover::after {
+    .nav-links a:hover::after {
       width: 100%;
     }
 
-    nav a.active::after {
+    .nav-links a.active::after {
       width: 100%;
     }
 
-    /* Generic links (inside content) */
+    /* Toggle button (hamburger) */
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: rgba(61, 55, 90, 0.8);
+      color: #bbaaf0;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .nav-toggle-icon {
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    /* LINKS INSIDE CONTENT
+       ------------------------------------------------------------------ */
+
     a {
       color: #bbaaf0;
       text-decoration: none;
@@ -112,7 +142,9 @@
       width: 100%;
     }
 
-    /* Main card */
+    /* MAIN CARD
+       ------------------------------------------------------------------ */
+
     .card {
       background-color: #3d375a;
       border-radius: 12px;
@@ -150,6 +182,9 @@
       line-height: 1.5;
     }
 
+    /* FOOTER
+       ------------------------------------------------------------------ */
+
     footer {
       text-align: center;
       margin-top: 40px;
@@ -165,7 +200,6 @@
       transform: scale(1.1);
     }
 
-    /* Remove underline animation from the Twitch icon itself */
     .twitch-link::after {
       display: none !important;
     }
@@ -183,7 +217,9 @@
       font-style: italic;
     }
 
-    /* Back-to-top button */
+    /* BACK TO TOP BUTTON
+       ------------------------------------------------------------------ */
+
     .back-to-top-button {
       position: fixed;
       bottom: 24px;
@@ -214,7 +250,9 @@
       background-color: #b7aff2;
     }
 
-    /* Home (back to splash) circular icon button */
+    /* HOME BUTTON
+       ------------------------------------------------------------------ */
+
     .home-button {
       position: fixed;
       top: 20px;
@@ -232,7 +270,7 @@
         0 0 0 1px rgba(255, 255, 255, 0.06) inset;
       color: #bbaaf0;
       text-decoration: none;
-      z-index: 1001; /* above nav */
+      z-index: 1001;
       transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -245,7 +283,6 @@
       transform: scale(0.98);
     }
 
-    /* Remove link underline animation for the icon */
     .home-button::after {
       display: none !important;
     }
@@ -256,19 +293,47 @@
       display: block;
     }
 
-    /* Mobile tweaks */
+    /* RESPONSIVE NAV BEHAVIOR
+       ------------------------------------------------------------------ */
+
     @media (max-width: 520px) {
       body {
         padding: 0 12px 32px;
       }
 
-      nav {
+      nav.nav {
         top: 14px;
-        padding: 10px 16px;
-        gap: 16px;
-        flex-wrap: wrap;       /* allow wrapping */
-        white-space: normal;   /* let links break to next line */
-        justify-content: center;
+        padding: 8px 12px;
+        gap: 8px;
+        justify-content: space-between;
+      }
+
+      /* Show toggle, hide links by default on mobile */
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background-color: rgba(61, 55, 90, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        min-width: 180px;
+      }
+
+      .nav.open .nav-links {
+        display: flex;
       }
 
       .home-button {
@@ -279,16 +344,33 @@
       }
 
       .card {
-        margin-top: 96px;
+        margin-top: 104px;
         margin-bottom: 48px;
       }
     }
 
+    @media (min-width: 521px) {
+      /* Desktop: always show links inline, hide toggle */
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex !important;
+        position: static;
+        transform: none;
+        margin-top: 0;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
     @media (max-width: 360px) {
-      nav {
-        gap: 12px;
-        padding-inline: 12px;
-        font-size: 0.9rem;
+      nav.nav {
+        max-width: calc(100% - 20px);
       }
 
       h1 {
@@ -315,11 +397,18 @@
     </svg>
   </a>
 
-  <nav>
-    <a href="qa.html" class="active">Q&A</a>
-    <a href="rules.html">Rules</a>
-    <a href="credits.html">Credits</a>
-    <a href="commands.html">Commands</a>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="nav-toggle-icon">☰</span>
+      <span>Menu</span>
+    </button>
+
+    <div class="nav-links">
+      <a href="qa.html" class="active">Q&A</a>
+      <a href="rules.html">Rules</a>
+      <a href="credits.html">Credits</a>
+      <a href="commands.html">Commands</a>
+    </div>
   </nav>
 
   <main>
@@ -464,6 +553,7 @@
   <button class="back-to-top-button" id="backToTop">↑</button>
 
   <script>
+    // Back-to-top behavior
     const backToTopBtn = document.getElementById("backToTop");
 
     window.addEventListener("scroll", () => {
@@ -475,6 +565,17 @@
     backToTopBtn.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
+
+    // Mobile nav toggle
+    const nav = document.querySelector("nav.nav");
+    const navToggle = document.querySelector(".nav-toggle");
+
+    if (nav && navToggle) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = nav.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
   </script>
 </body>
 </html>
