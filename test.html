@@ -2,445 +2,224 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Your Name / Brand – Home</title>
+  <title>Your Site – Intro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Short description of you / your site." />
+  <meta
+    name="description"
+    content="Intro page with random facts before entering the main site."
+  />
 
   <style>
-    /* -------- Base resets -------- */
+    /* Basic reset */
     *, *::before, *::after {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
-      color: #111827;
-      background: #f9fafb;
-      line-height: 1.6;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* -------- Layout helpers -------- */
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1.25rem;
-    }
-
-    /* -------- Header / nav -------- */
-    header {
-      border-bottom: 1px solid #e5e7eb;
-      background: #ffffffd9;
-      backdrop-filter: blur(8px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .nav {
+      background: #0f172a;
+      color: #e5e7eb;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+      justify-content: center;
     }
 
-    .logo {
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      font-size: 1rem;
-      text-transform: uppercase;
-    }
-
-    /* Desktop nav */
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.95rem;
-    }
-
-    .nav-links a {
-      position: relative;
-      padding-bottom: 0.25rem;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      background: #111827;
-      transition: width 0.2s ease-out;
-    }
-
-    .nav-links a:hover::after,
-    .nav-links a:focus-visible::after {
+    /* Main card */
+    .wrapper {
       width: 100%;
+      max-width: 480px;
+      padding: 1.75rem;
     }
 
-    /* Mobile nav toggle (simple, CSS-only) */
-    .nav-toggle {
-      display: none;
-      border: none;
-      background: none;
+    .card {
+      background: #020617;
+      border-radius: 1.25rem;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+      border: 1px solid #1f2937;
+    }
+
+    .title {
       font-size: 1.5rem;
-      cursor: pointer;
+      font-weight: 700;
+      margin: 0 0 0.25rem;
     }
 
-    /* -------- Hero section -------- */
-    main {
-      flex: 1;
+    .subtitle {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin: 0 0 1.5rem;
     }
 
-    .hero {
-      padding: 3rem 0 3.5rem;
-    }
-
-    .hero-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    .hero-pretitle {
-      font-size: 0.9rem;
+    .label {
+      font-size: 0.8rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #6b7280;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
     }
 
-    .hero-title {
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      line-height: 1.1;
-      margin-bottom: 0.75rem;
-      font-weight: 700;
-      color: #111827;
+    .fact-box {
+      background: #020617;
+      border-radius: 0.9rem;
+      border: 1px solid #1f2937;
+      padding: 1rem 1rem 1.1rem;
+      margin-bottom: 1rem;
     }
 
-    .hero-subtitle {
-      font-size: 1rem;
-      color: #4b5563;
-      margin-bottom: 1.5rem;
-      max-width: 34rem;
+    .fact-text {
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: #e5e7eb;
     }
 
-    .hero-actions {
+    .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      margin: 1.25rem 0 0.25rem;
     }
 
-    .btn-primary,
-    .btn-ghost {
+    button,
+    a.btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       padding: 0.7rem 1.3rem;
       border-radius: 999px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       border: 1px solid transparent;
       cursor: pointer;
       text-decoration: none;
       transition: transform 0.08s ease-out, box-shadow 0.08s ease-out,
         background-color 0.15s ease-out, border-color 0.15s ease-out;
+      white-space: nowrap;
     }
 
     .btn-primary {
-      background: #111827;
-      color: #f9fafb;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+      background: #e5e7eb;
+      color: #020617;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.45);
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.6);
     }
 
     .btn-ghost {
-      background: #ffffff;
-      color: #111827;
-      border-color: #d1d5db;
+      background: transparent;
+      color: #e5e7eb;
+      border-color: #4b5563;
     }
 
     .btn-ghost:hover {
-      background: #f3f4f6;
+      background: #111827;
     }
 
-    .hero-note {
-      font-size: 0.85rem;
+    .hint {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
       color: #6b7280;
     }
 
-    .hero-image {
-      border-radius: 1.5rem;
-      background: radial-gradient(circle at top left, #e5e7eb, #d1d5db);
-      padding: 1.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-image-inner {
-      text-align: center;
-    }
-
-    .hero-image-inner h2 {
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .hero-image-inner p {
-      font-size: 0.9rem;
-      color: #4b5563;
-      margin-bottom: 0.75rem;
-    }
-
-    /* -------- Simple secondary section -------- */
-    .section {
-      padding: 2.5rem 0 3rem;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .section h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .section p {
-      color: #4b5563;
-      max-width: 40rem;
-      font-size: 0.97rem;
-    }
-
-    /* -------- Footer -------- */
-    footer {
-      border-top: 1px solid #e5e7eb;
-      padding: 1.25rem 0 1.75rem;
-      font-size: 0.85rem;
-      color: #6b7280;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-
-    /* -------- Responsive tweaks -------- */
-    @media (max-width: 768px) {
-      .hero {
-        padding: 2.25rem 0 2.75rem;
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.6rem 1.3rem;
+        border-radius: 1rem;
       }
 
-      .hero-inner {
-        grid-template-columns: minmax(0, 1fr);
+      .title {
+        font-size: 1.35rem;
       }
 
-      .hero-image {
-        order: -1; /* image above text on mobile; remove if you don't like this */
-      }
-
-      .nav-links {
-        display: none; /* hide desktop links */
-      }
-
-      .nav-toggle {
-        display: block;
-      }
-
-      /* Simple dropdown nav when checkbox is checked */
-      #nav-checkbox:checked ~ .nav-links-mobile {
-        max-height: 200px;
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .nav-links-mobile {
-        display: flex;
+      .actions {
         flex-direction: column;
-        gap: 0.75rem;
-        margin-top: 0.75rem;
-        font-size: 0.95rem;
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
-        transition: max-height 0.15s ease-out, opacity 0.15s ease-out;
+        align-items: stretch;
       }
 
-      .nav-links-mobile a {
-        padding-bottom: 0.1rem;
-      }
-    }
-
-    /* On desktop we completely hide the mobile links wrapper */
-    @media (min-width: 769px) {
-      .nav-links-mobile {
-        display: none !important;
+      button,
+      a.btn {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="container">
-        <div class="nav">
-          <div class="logo">YOUR LOGO / NAME</div>
+  <div class="wrapper">
+    <main class="card">
+      <h1 class="title">Welcome to my little corner of the internet</h1>
+      <p class="subtitle">
+        Before you enter, enjoy a random fact about me / this site.
+      </p>
 
-          <!-- Desktop nav -->
-          <nav class="nav-links" aria-label="Main navigation">
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-          </nav>
-
-          <!-- Mobile nav toggle -->
-          <label for="nav-checkbox" class="nav-toggle" aria-label="Toggle navigation">
-            ☰
-          </label>
-          <input id="nav-checkbox" type="checkbox" hidden />
-        </div>
-
-        <!-- Mobile dropdown nav -->
-        <nav class="nav-links-mobile" aria-label="Mobile navigation">
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
-        </nav>
+      <div class="label">Random fact</div>
+      <div class="fact-box" aria-live="polite">
+        <p id="fact" class="fact-text">
+          Loading a random fact...
+        </p>
       </div>
-    </header>
 
-    <main>
-      <!-- Hero / intro -->
-      <section class="hero">
-        <div class="container hero-inner">
-          <div>
-            <div class="hero-pretitle">Welcome</div>
-            <h1 class="hero-title">Hi, I’m [Your Name].</h1>
-            <p class="hero-subtitle">
-              A short one–two sentence intro about who you are and what this
-              site is for. Keep it friendly and clear: streamer, dev, artist,
-              whatever fits you best.
-            </p>
+      <div class="actions">
+        <button type="button" class="btn-ghost" id="new-fact-btn">
+          New fact
+        </button>
 
-            <div class="hero-actions">
-              <a href="#projects" class="btn-primary">View my work</a>
-              <a href="#contact" class="btn-ghost">Contact me</a>
-            </div>
+        <!-- TODO: change "qa.html" to the actual filename of your Q&A page -->
+        <a href="qa.html" class="btn btn-primary">
+          Enter site
+        </a>
+      </div>
 
-            <p class="hero-note">
-              This site is lightweight, mobile-friendly, and hosted on GitHub Pages.
-            </p>
-          </div>
-
-          <aside class="hero-image">
-            <div class="hero-image-inner">
-              <!-- Replace this with an actual image if you want -->
-              <h2>Your brand snapshot</h2>
-              <p>
-                Drop a logo, avatar, or simple illustration here. For now,
-                it’s just a placeholder.
-              </p>
-              <!-- Example: <img src="images/avatar.png" alt="Your avatar" /> -->
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <!-- Simple "about" section -->
-      <section id="about" class="section">
-        <div class="container">
-          <h2>About</h2>
-          <p>
-            This is a short paragraph about you or the purpose of this site.
-            You can talk about your stream, your projects, or whatever you
-            want visitors to know first. Keep it simple so it’s easy to read on
-            mobile.
-          </p>
-        </div>
-      </section>
-
-      <!-- Simple "projects" section -->
-      <section id="projects" class="section">
-        <div class="container">
-          <h2>Projects / Links</h2>
-          <p>
-            List a few key things: Twitch, GitHub, portfolio pieces, etc.
-            For more structure later, you can turn this into cards or a grid,
-            but this basic version keeps the code light.
-          </p>
-        </div>
-      </section>
-
-      <!-- Simple "contact" section -->
-      <section id="contact" class="section">
-        <div class="container">
-          <h2>Contact</h2>
-          <p>
-            The easiest way to reach me is via
-            <a href="mailto:you@example.com">email</a>
-            or you can find me on
-            <a href="https://twitch.tv/yourname" target="_blank" rel="noreferrer">
-              Twitch
-            </a>.
-          </p>
-        </div>
-      </section>
+      <p class="hint">
+        You’ll land on a big Q&A page where I’ve answered a bunch of questions.
+      </p>
     </main>
-
-    <footer>
-      <div class="container footer-inner">
-        <div>© <span id="year"></span> Your Name. All rights reserved.</div>
-        <div class="footer-links">
-          <a href="#top">Back to top</a>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <script>
-    // Tiny JS: dynamic year only (optional)
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // Put your random facts here:
+    const facts = [
+      "I made this site mostly to answer questions people keep asking me.",
+      "Some of these facts might be serious. Some might be very, very not.",
+      "I spend an unhealthy amount of time tweaking tiny design details.",
+      "Yes, there is a Q&A page. Yes, I really did answer all of those.",
+      "You’re absolutely allowed to press the New Fact button multiple times.",
+      // Add or replace with your own facts:
+      // "I have a Twitch channel called ...",
+      // "I named my community ...",
+    ];
+
+    function getRandomFact(lastFact) {
+      if (facts.length === 0) return "I forgot to add facts to the list. Oops.";
+      if (facts.length === 1) return facts[0];
+
+      let next;
+      do {
+        next = facts[Math.floor(Math.random() * facts.length)];
+      } while (next === lastFact);
+      return next;
+    }
+
+    const factEl = document.getElementById("fact");
+    const newFactBtn = document.getElementById("new-fact-btn");
+
+    let currentFact = "";
+
+    function showRandomFact() {
+      const fact = getRandomFact(currentFact);
+      currentFact = fact;
+      factEl.textContent = fact;
+    }
+
+    newFactBtn.addEventListener("click", showRandomFact);
+
+    // Show one right away on load
+    showRandomFact();
   </script>
 </body>
 </html>
