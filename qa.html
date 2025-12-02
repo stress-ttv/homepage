@@ -130,6 +130,11 @@
       width: 100%;
     }
 
+    /* Force underline for the click animation */
+    a.link-animating::after {
+      width: 100%;
+    }
+
     /* MAIN CARD
        ------------------------------------------------------------------ */
 
@@ -139,6 +144,7 @@
       padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
       width: 100%;
+      /* nav top (40) + nav height (~40) + same-ish gap (~40) → ~120 */
       margin: 132px auto 60px auto;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
@@ -247,7 +253,7 @@
       }
 
       nav.nav {
-        top: 24px;
+        top: 24px; /* still a bit of space on mobile */
         padding: 10px 18px;
         gap: 8px;
         justify-content: space-between;
@@ -274,7 +280,7 @@
         gap: 10px;
         min-width: 200px;
 
-        /* Animation props */
+        /* Animation for dropdown */
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.18s ease-out, transform 0.18s ease-out;
@@ -494,7 +500,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Mobile nav toggle with animation + outside click close
+    // Mobile nav toggle with animation + outside click + scroll close
     const nav = document.querySelector("nav.nav");
     const navToggle = document.querySelector(".nav-toggle");
     const navLinks = document.querySelector(".nav-links");
@@ -514,7 +520,7 @@
         navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
       });
 
-      // Close when clicking a nav link (handy on mobile)
+      // Close when clicking a nav link (useful on mobile)
       navLinks.addEventListener("click", (event) => {
         const target = event.target;
         if (target.tagName === "A") {
@@ -530,6 +536,13 @@
         }
       });
 
+      // Close when scrolling (mobile-style behavior)
+      window.addEventListener("scroll", () => {
+        if (window.innerWidth <= 520 && nav.classList.contains("open")) {
+          closeNav();
+        }
+      });
+
       // Safety: if resized to desktop while open, reset state
       window.addEventListener("resize", () => {
         if (window.innerWidth > 520) {
@@ -537,6 +550,52 @@
         }
       });
     }
+
+    // Delay navigation slightly so underline animation can play
+    const LINK_ANIM_DURATION = 220; // ms, should match CSS transition-ish
+
+    document.querySelectorAll("a[href]").forEach((link) => {
+      const href = link.getAttribute("href");
+      if (!href) return;
+
+      // Optional: skip pure hash links (in-page anchors)
+      // if (href.startsWith("#")) return;
+
+      link.addEventListener("click", (event) => {
+        // Only delay for primary left-click without modifier keys
+        if (
+          event.button !== 0 || // not left click
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
+        }
+
+        // Avoid double-handling if already animating
+        if (link.dataset.animating === "true") return;
+
+        event.preventDefault();
+        link.dataset.animating = "true";
+        link.classList.add("link-animating");
+
+        const url = link.href;
+
+        setTimeout(() => {
+          // Remove helper class/flag
+          link.classList.remove("link-animating");
+          link.dataset.animating = "false";
+
+          // Navigate (respect target)
+          if (link.target === "_blank") {
+            window.open(url, "_blank", "noopener,noreferrer");
+          } else {
+            window.location.href = url;
+          }
+        }, LINK_ANIM_DURATION);
+      });
+    });
   </script>
 </body>
 </html>
