@@ -140,7 +140,8 @@
       font-weight: 600;
       letter-spacing: 0.02em;
       color: #ffffff;
-      background: linear-gradient(180deg, #a855f7, #7c3aed); /* simple accent gradient */
+      /* darker purple gradient */
+      background: linear-gradient(180deg, #5b21b6, #3b0764);
       box-shadow: 0 12px 30px rgba(0,0,0,0.6);
       text-decoration: none;
       display: inline-flex;
@@ -158,8 +159,8 @@
     }
 
     .btn:hover {
-      filter: brightness(1.05);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+      filter: brightness(1.03);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.75);
     }
 
     .btn:active {
@@ -206,14 +207,12 @@
       </p>
 
       <div class="actions">
-        <!-- Adjust the href if your Q&A file has a different path/name -->
         <a id="enterBtn" class="btn" href="/qa.html" rel="follow">Enter site →</a>
       </div>
     </section>
   </div>
 
   <script>
-    // Simple random fact on load
     (function () {
       var el = document.getElementById("tagline");
       if (!el) return;
