@@ -527,14 +527,6 @@
         navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
       });
 
-      // Close when clicking a nav link (useful on mobile)
-      // navLinks.addEventListener("click", (event) => {
-      // const target = event.target;
-      // if (target.tagName === "A") {
-          //closeNav();
-        //}
-      //});
-
       // Close when clicking/tapping outside of nav
       document.addEventListener("click", (event) => {
         if (!nav.classList.contains("open")) return;
