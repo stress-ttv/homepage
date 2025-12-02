@@ -190,6 +190,67 @@
     }
   </style>
 </head>
+
+  <script>
+  (function () {
+    // Konami code sequence
+    const KONAMI = [
+      "ArrowUp",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowRight",
+      "b",
+      "a"
+    ];
+
+    let position = 0;
+    let unlocked = false;
+
+    // Listen for key presses
+    window.addEventListener("keydown", function (e) {
+      const key = e.key;
+      const expected = KONAMI[position];
+
+      // Match arrow keys exactly, B/A case-insensitive
+      if (
+        (expected.startsWith("Arrow") && key === expected) ||
+        (!expected.startsWith("Arrow") && key.toLowerCase() === expected)
+      ) {
+        position++;
+        if (position === KONAMI.length) {
+          unlocked = true;
+          position = 0;
+
+          // Fun little confirmation
+          const tagline = document.getElementById("tagline");
+          if (tagline) {
+            tagline.textContent = "Cheat code accepted. Welcome, gamer.";
+          }
+        }
+      } else {
+        // reset if wrong key
+        position = 0;
+      }
+    });
+
+    // Gate the "Enter site" button behind the Konami code
+    const enterBtn = document.getElementById("enterBtn");
+    if (enterBtn) {
+      enterBtn.addEventListener("click", function (e) {
+        if (!unlocked) {
+          e.preventDefault();
+          alert("Konami Code required:\n↑ ↑ ↓ ↓ ← → ← → B A");
+        }
+      });
+    }
+  })();
+</script>
+
+
 <body>
   <div class="container" role="main">
     <section class="card" aria-label="Intro">
