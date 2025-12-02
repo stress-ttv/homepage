@@ -15,7 +15,6 @@
   />
 
   <style>
-    /* Layout sanity */
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -35,18 +34,17 @@
       overflow-x: hidden;
     }
 
-    /* NAV
-       ------------------------------------------------------------------ */
+    /* NAV ------------------------------------------------------ */
 
     nav.nav {
       position: fixed;
-      top: 40px; /* more space from browser top */
+      top: 40px;
       left: 50%;
       transform: translateX(-50%);
       background-color: rgba(61, 55, 90, 0.3);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      padding: 12px 26px; /* chunkier pill padding */
+      padding: 12px 26px;
       border-radius: 999px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       z-index: 999;
@@ -69,13 +67,11 @@
       font-size: 0.98rem;
     }
 
-    /* Active link keeps its underline visible */
     .nav-links a.active::after {
       width: 100%;
       background: #bbaaf0;
     }
 
-    /* Toggle button (hamburger) */
     .nav-toggle {
       display: none;
       border: none;
@@ -96,8 +92,7 @@
       line-height: 1;
     }
 
-    /* GLOBAL LINK STYLING – animated underline (Option 2)
-       ------------------------------------------------------------------ */
+    /* GLOBAL LINK STYLING ------------------------------------- */
 
     a {
       position: relative;
@@ -130,13 +125,11 @@
       width: 100%;
     }
 
-    /* Force underline for the click animation */
     a.link-animating::after {
       width: 100%;
     }
 
-    /* MAIN CARD
-       ------------------------------------------------------------------ */
+    /* CARD ----------------------------------------------------- */
 
     .card {
       background-color: #3d375a;
@@ -175,8 +168,7 @@
       line-height: 1.5;
     }
 
-    /* FOOTER
-       ------------------------------------------------------------------ */
+    /* FOOTER --------------------------------------------------- */
 
     footer {
       text-align: center;
@@ -210,8 +202,7 @@
       font-style: italic;
     }
 
-    /* BACK TO TOP BUTTON
-       ------------------------------------------------------------------ */
+    /* BACK TO TOP ---------------------------------------------- */
 
     .back-to-top-button {
       position: fixed;
@@ -243,8 +234,7 @@
       background-color: #b7aff2;
     }
 
-    /* RESPONSIVE NAV BEHAVIOR
-       ------------------------------------------------------------------ */
+    /* RESPONSIVE NAV ------------------------------------------- */
 
     @media (max-width: 520px) {
       body {
@@ -275,11 +265,9 @@
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
         flex-direction: column;
-        align-items: center;          /* center the links */
+        align-items: center;
         gap: 10px;
         min-width: 200px;
-
-        /* Animation for dropdown */
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.18s ease-out, transform 0.18s ease-out;
@@ -287,9 +275,9 @@
 
       .nav-links a {
         display: inline-block;
-        width: auto;                 /* shrink to text width */
+        width: auto;
         text-align: center;
-        padding: 6px 12px;           /* keeps a comfy tap target */
+        padding: 6px 12px;
       }
 
       .nav.open .nav-links {
@@ -353,10 +341,9 @@
 
   <main>
     <div class="card">
-      <a id="top"></a>
       <h1>Know Thy Streamer</h1>
 
-      <!-- Q&A content unchanged -->
+      <!-- Q&A content -->
       <div class="qa-pair">
         <p>What’s the dumbest way you’ve ever injured yourself?</p>
         <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
@@ -494,20 +481,18 @@
   <button class="back-to-top-button" id="backToTop">↑</button>
 
   <script>
-    // Back-to-top behavior
+    // Back-to-top
     const backToTopBtn = document.getElementById("backToTop");
-
     window.addEventListener("scroll", () => {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
       backToTopBtn.classList.toggle("show", scrollPosition > 150);
     });
-
     backToTopBtn.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Mobile nav toggle with animation + outside click + scroll close
+    // Mobile nav toggle + close on outside click / scroll
     const nav = document.querySelector("nav.nav");
     const navToggle = document.querySelector(".nav-toggle");
     const navLinks = document.querySelector(".nav-links");
@@ -522,12 +507,11 @@
 
     if (nav && navToggle && navLinks) {
       navToggle.addEventListener("click", (event) => {
-        event.stopPropagation(); // prevent immediate outside-click close
+        event.stopPropagation();
         const isOpen = nav.classList.toggle("open");
         navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
       });
 
-      // Close when clicking/tapping outside of nav
       document.addEventListener("click", (event) => {
         if (!nav.classList.contains("open")) return;
         if (!nav.contains(event.target)) {
@@ -535,14 +519,12 @@
         }
       });
 
-      // Close when scrolling (mobile-style behavior)
       window.addEventListener("scroll", () => {
         if (window.innerWidth <= 520 && nav.classList.contains("open")) {
           closeNav();
         }
       });
 
-      // Safety: if resized to desktop while open, reset state
       window.addEventListener("resize", () => {
         if (window.innerWidth > 520) {
           closeNav();
@@ -551,16 +533,15 @@
     }
 
     // Delay navigation slightly so underline animation can play
-    const LINK_ANIM_DURATION = 220; // ms
+    const LINK_ANIM_DURATION = 220;
 
     document.querySelectorAll("a[href]").forEach((link) => {
       const href = link.getAttribute("href");
       if (!href) return;
 
       link.addEventListener("click", (event) => {
-        // Only delay for primary left-click without modifier keys
         if (
-          event.button !== 0 || // not left click
+          event.button !== 0 ||
           event.metaKey ||
           event.ctrlKey ||
           event.shiftKey ||
