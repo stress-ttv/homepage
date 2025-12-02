@@ -286,8 +286,10 @@
       }
 
       .nav-links a {
-        width: 100%;                 /* full width tap target */
-        text-align: center;          /* center the text */
+        display: inline-block;
+        width: auto;                 /* shrink to text width */
+        text-align: center;
+        padding: 6px 12px;           /* keeps a comfy tap target */
       }
 
       .nav.open .nav-links {
