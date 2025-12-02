@@ -139,7 +139,6 @@
       padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
       width: 100%;
-      /* nav top (40) + nav height (~40) + same-ish gap (~40) → ~120 */
       margin: 132px auto 60px auto;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
@@ -248,7 +247,7 @@
       }
 
       nav.nav {
-        top: 24px; /* still a bit of space on mobile */
+        top: 24px;
         padding: 10px 18px;
         gap: 8px;
         justify-content: space-between;
@@ -259,11 +258,10 @@
       }
 
       .nav-links {
-        display: none;
         position: absolute;
         top: 100%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) translateY(-4px);
         margin-top: 8px;
         padding: 10px 14px;
         border-radius: 12px;
@@ -275,10 +273,17 @@
         align-items: flex-start;
         gap: 10px;
         min-width: 200px;
+
+        /* Animation props */
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s ease-out, transform 0.18s ease-out;
       }
 
       .nav.open .nav-links {
-        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
       }
 
       .card {
@@ -295,13 +300,15 @@
       .nav-links {
         display: flex !important;
         position: static;
-        transform: none;
+        transform: none !important;
         margin-top: 0;
         padding: 0;
         background: transparent;
         box-shadow: none;
         flex-direction: row;
         align-items: center;
+        opacity: 1 !important;
+        pointer-events: auto !important;
       }
     }
 
@@ -487,14 +494,47 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Mobile nav toggle
+    // Mobile nav toggle with animation + outside click close
     const nav = document.querySelector("nav.nav");
     const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.querySelector(".nav-links");
 
-    if (nav && navToggle) {
-      navToggle.addEventListener("click", () => {
+    function closeNav() {
+      if (!nav) return;
+      nav.classList.remove("open");
+      if (navToggle) {
+        navToggle.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    if (nav && navToggle && navLinks) {
+      navToggle.addEventListener("click", (event) => {
+        event.stopPropagation(); // prevent immediate outside-click close
         const isOpen = nav.classList.toggle("open");
         navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+
+      // Close when clicking a nav link (handy on mobile)
+      navLinks.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target.tagName === "A") {
+          closeNav();
+        }
+      });
+
+      // Close when clicking/tapping outside of nav
+      document.addEventListener("click", (event) => {
+        if (!nav.classList.contains("open")) return;
+        if (!nav.contains(event.target)) {
+          closeNav();
+        }
+      });
+
+      // Safety: if resized to desktop while open, reset state
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 520) {
+          closeNav();
+        }
       });
     }
   </script>
