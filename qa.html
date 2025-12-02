@@ -66,21 +66,13 @@
     .nav-links a {
       color: #bbaaf0;
       font-weight: bold;
-      text-decoration: none;
-      position: relative;
       font-size: 0.98rem;
     }
 
-    /* Active link underline (keep for orientation) */
+    /* Active link keeps its underline visible */
     .nav-links a.active::after {
-      content: "";
-      position: absolute;
-      bottom: -4px;
-      left: 0;
       width: 100%;
-      height: 2px;
-      border-radius: 999px;
-      background-color: #bbaaf0;
+      background: #bbaaf0;
     }
 
     /* Toggle button (hamburger) */
@@ -104,21 +96,38 @@
       line-height: 1;
     }
 
-    /* LINKS INSIDE CONTENT – global glow hover
+    /* GLOBAL LINK STYLING – animated underline (Option 2)
        ------------------------------------------------------------------ */
 
     a {
+      position: relative;
       color: #bbaaf0;
       text-decoration: none;
-      transition: color 0.2s ease, text-shadow 0.2s ease;
+      transition: color 0.2s ease;
+    }
+
+    a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      background: #bbaaf0;
+      border-radius: 999px;
+      transition: width 0.2s ease;
     }
 
     a:hover,
-    a:focus-visible {
+    a:focus-visible,
+    a:active {
       color: #e3ddff;
-      text-shadow:
-        0 0 4px rgba(187, 170, 240, 0.7),
-        0 0 10px rgba(139, 92, 246, 0.65);
+    }
+
+    a:hover::after,
+    a:focus-visible::after,
+    a:active::after {
+      width: 100%;
     }
 
     /* MAIN CARD
@@ -265,7 +274,7 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-        min-width: 180px;
+        min-width: 200px;
       }
 
       .nav.open .nav-links {
@@ -315,6 +324,7 @@
     </button>
 
     <div class="nav-links">
+      <a href="https://stwess.co">Home</a>
       <a href="qa.html" class="active">Q&A</a>
       <a href="rules.html">Rules</a>
       <a href="credits.html">Credits</a>
@@ -327,7 +337,6 @@
       <a id="top"></a>
       <h1>Know Thy Streamer</h1>
 
-      <!-- Q&A content unchanged -->
       <div class="qa-pair">
         <p>What’s the dumbest way you’ve ever injured yourself?</p>
         <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
