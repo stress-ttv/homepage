@@ -144,7 +144,6 @@
       padding: clamp(24px, 5vw, 32px);
       max-width: 600px;
       width: 100%;
-      /* nav top (40) + nav height (~40) + same-ish gap (~40) → ~120 */
       margin: 132px auto 60px auto;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
@@ -253,7 +252,7 @@
       }
 
       nav.nav {
-        top: 24px; /* still a bit of space on mobile */
+        top: 24px;
         padding: 10px 18px;
         gap: 8px;
         justify-content: space-between;
@@ -276,7 +275,7 @@
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;          /* center the links */
         gap: 10px;
         min-width: 200px;
 
@@ -284,6 +283,11 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+      }
+
+      .nav-links a {
+        width: 100%;                 /* full width tap target */
+        text-align: center;          /* center the text */
       }
 
       .nav.open .nav-links {
@@ -350,6 +354,7 @@
       <a id="top"></a>
       <h1>Know Thy Streamer</h1>
 
+      <!-- Q&A content unchanged -->
       <div class="qa-pair">
         <p>What’s the dumbest way you’ve ever injured yourself?</p>
         <p>Pulled my back while washing my face. Got injured trying to be hygienic.</p>
@@ -552,14 +557,11 @@
     }
 
     // Delay navigation slightly so underline animation can play
-    const LINK_ANIM_DURATION = 220; // ms, should match CSS transition-ish
+    const LINK_ANIM_DURATION = 220; // ms
 
     document.querySelectorAll("a[href]").forEach((link) => {
       const href = link.getAttribute("href");
       if (!href) return;
-
-      // Optional: skip pure hash links (in-page anchors)
-      // if (href.startsWith("#")) return;
 
       link.addEventListener("click", (event) => {
         // Only delay for primary left-click without modifier keys
@@ -573,7 +575,6 @@
           return;
         }
 
-        // Avoid double-handling if already animating
         if (link.dataset.animating === "true") return;
 
         event.preventDefault();
@@ -583,11 +584,9 @@
         const url = link.href;
 
         setTimeout(() => {
-          // Remove helper class/flag
           link.classList.remove("link-animating");
           link.dataset.animating = "false";
 
-          // Navigate (respect target)
           if (link.target === "_blank") {
             window.open(url, "_blank", "noopener,noreferrer");
           } else {
